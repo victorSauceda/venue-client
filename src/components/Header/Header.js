@@ -42,7 +42,9 @@ const Header = props => {
           noWrap
           className={classes.title}
         >
-          Venue
+          <Link color="inherit" to="/">
+            Venue
+          </Link>
         </Typography>
         <Typography
           variant="title"

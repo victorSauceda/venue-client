@@ -49,13 +49,33 @@ class App extends Component {
       cartItems: []
     };
     this.addToCart = this.addToCart.bind(this);
+    this.updateCartItem = this.updateCartItem.bind(this);
+    this.deleteCartItem = this.deleteCartItem.bind(this);
   }
-  addToCart(foodobj) {
+  addToCart(foodobj, qty) {
     this.setState(prevState => {
       const cartItems = [...prevState.cartItems];
+      foodobj.qty = qty;
       cartItems.push(foodobj);
       console.log(cartItems);
       return { cartItems: cartItems };
+    });
+  }
+  updateCartItem(foodobj, qty) {
+    this.setState(prevState => {
+      const cartItems = [...prevState.cartItems];
+      const itemUpdating = cartItems.find(
+        element => foodobj.name === element.name
+      );
+      itemUpdating.qty = qty;
+      return { cartItems: cartItems };
+    });
+  }
+  deleteCartItem(foodobj) {
+    this.setState(prevState => {
+      const cartItems = [...prevState.cartItems];
+      let newCart = cartItems.filter(item => item.name !== foodobj.name);
+      return { cartItems: newCart };
     });
   }
   render() {
@@ -64,7 +84,8 @@ class App extends Component {
     const childProps = {
       cartItems: this.state.cartItems,
       addToCart: this.addToCart,
-      name: this.state.bigMish
+      updateCartItem: this.updateCartItem,
+      deleteCartItem: this.deleteCartItem
     };
 
     return (

@@ -16,7 +16,7 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-
+import MenuItemComp from "./MenuItem";
 import CardMedia from "@material-ui/core/CardMedia";
 
 const classes = {
@@ -57,17 +57,18 @@ const classes = {
 class Home extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      quantity: 1
-    };
-    this.handleChange = this.handleChange.bind(this);
+
+    // items.reduce((acc, next) => {
+    //   return {
+    //     ...acc(
+    //       (this.state = {
+    //         [acc.name]: { quantity: 1 }
+    //       })
+    //     )
+    //   };
+    // });
   }
 
-  handleChange = event => {
-    this.setState({
-      quantity: event.target.value
-    });
-  };
   render() {
     return (
       <div
@@ -82,56 +83,11 @@ class Home extends React.Component {
         <Grid xs={12} sm={6} md={4}>
           {items.map((item, key) => {
             return (
-              <Card
-                style={{ marginBottom: "20px" }}
-                className={classes.card}
-                key={key}
-              >
-                <img
-                  src={item.img}
-                  alt={item.alt}
-                  style={{ height: "16rem", width: "22rem" }}
-                  height="142"
-                  width="142"
-                />
-                <CardContent className={classes.cardContent}>
-                  <Typography
-                    style={{ textAlign: "center" }}
-                    gutterBottom
-                    variant="h5"
-                    component="h2"
-                  ></Typography>
-
-                  <Typography style={{ textAlign: "center" }}>
-                    This is a media card. You can use this section to describe
-                    the content.
-                  </Typography>
-                  <Typography>Price:{item.price}</Typography>
-                  <Typography>Distance:{item.distance}</Typography>
-                  <Typography>Calories:{item.calories}</Typography>
-                  <Typography>Diet Type:{item.dietType}</Typography>
-                  <Typography>Ingredients:{item.ingredients}</Typography>
-                </CardContent>
-                <Button
-                  variant="contained"
-                  onClick={() => this.props.addToCart(item)}
-                >
-                  Add to cart
-                </Button>
-                <FormControl className={classes.formControl}>
-                  <InputLabel id="demo-simple-select-label">Qty</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value="0"
-                    onChange="4"
-                  >
-                    <MenuItem value={1}>1</MenuItem>
-                    <MenuItem value={2}>2</MenuItem>
-                    <MenuItem value={3}>3</MenuItem>
-                  </Select>
-                </FormControl>
-              </Card>
+              <MenuItemComp
+                item={item}
+                addToCart={this.props.addToCart}
+                classes={classes}
+              />
             );
           })}
         </Grid>
