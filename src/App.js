@@ -10,6 +10,7 @@ import Cart from "./containers/Cart";
 
 import MainLayout from "./layouts/MainLayout";
 import EmptyLayout from "./layouts/EmptyLayout";
+import Settings from "./containers/Settings";
 
 const NotFound = () => {
   return <div>NotFound</div>;
@@ -111,6 +112,12 @@ class App extends Component {
               appProps={childProps}
               component={Cart}
             />
+            <DashboardRoute
+              path="/settings"
+              appProps={childProps}
+              component={Cart}
+            />
+
             <EmptyRoute component={NotFound} />
           </Switch>
         </Router>
