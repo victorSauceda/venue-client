@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import CartItem from "./CartItem";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -7,12 +7,52 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import Sandbox from "./Sandbox";
+import Modal from "@material-ui/core/Modal";
+
+function rand() {
+  return Math.round(Math.random() * 20) - 10;
+}
+
+function getModalStyle() {
+  const top = 50 + rand();
+  const left = 50 + rand();
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`
+  };
+}
+
+const useStyles = makeStyles(theme => ({
+  paper: {
+    position: "absolute",
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: "2px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3)
+  }
+}));
+
 export default function Cart(props) {
-  console.log(props.cartItems);
-  let adder = props.cartItems.reduce((acc, next) => {
-    return acc + next.price * next.qty;
-  }, 0);
-  console.log("trying to add:", adder);
+  const classes = useStyles();
+  // getModalStyle is not a pure function, we roll the style only on the first render
+  const [modalStyle] = React.useState(getModalStyle);
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  console.log(props.adder);
+
   return (
     <div>
       <h2>My Cart</h2>
@@ -40,17 +80,32 @@ export default function Cart(props) {
                       item={item}
                       updateCartItem={props.updateCartItem}
                       deleteCartItem={props.deleteCartItem}
+                      adder={props.adder}
                     />
                   );
                 })}
               </TableBody>
             </Table>
           </TableContainer>
-          <h3 className="text-center"> Cart Total: ${adder}</h3>
+          <h3 className="text-center"> Cart Total: ${props.adder}</h3>
         </div>
       ) : (
         <p>Cart is Currently Empty</p>
       )}
+      <Button onClick={handleOpen} variant="contained">
+        Check Out
+      </Button>
+      <Modal
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+        open={open}
+        onClose={handleClose}
+      >
+        <div style={modalStyle} className={classes.paper}>
+          <Sandbox />
+          {/* <SimpleModal /> */}
+        </div>
+      </Modal>
     </div>
   );
 }

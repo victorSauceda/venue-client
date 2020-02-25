@@ -11,6 +11,8 @@ import Cart from "./containers/Cart";
 import MainLayout from "./layouts/MainLayout";
 import EmptyLayout from "./layouts/EmptyLayout";
 import Settings from "./containers/Settings";
+import Login from "./containers/Login";
+import Sandbox from "./containers/Sandbox";
 
 const NotFound = () => {
   return <div>NotFound</div>;
@@ -53,6 +55,7 @@ class App extends Component {
     this.updateCartItem = this.updateCartItem.bind(this);
     this.deleteCartItem = this.deleteCartItem.bind(this);
   }
+
   addToCart(foodobj, qty) {
     this.setState(prevState => {
       const cartItems = [...prevState.cartItems];
@@ -81,12 +84,17 @@ class App extends Component {
   }
   render() {
     const { settings } = this.props;
+    let adder = this.state.cartItems.reduce((acc, next) => {
+      return acc + next.price * next.qty;
+    }, 0);
+    console.log("adder: ", adder);
 
     const childProps = {
       cartItems: this.state.cartItems,
       addToCart: this.addToCart,
       updateCartItem: this.updateCartItem,
-      deleteCartItem: this.deleteCartItem
+      deleteCartItem: this.deleteCartItem,
+      adder: adder
     };
 
     return (
@@ -105,6 +113,18 @@ class App extends Component {
               exact
               path="/"
               component={Home}
+              appProps={childProps}
+            />
+            <DashboardRoute
+              path="/login"
+              exact
+              component={Login}
+              appProps={childProps}
+            />
+            <DashboardRoute
+              path="/sandbox"
+              exact
+              component={Sandbox}
               appProps={childProps}
             />
             <DashboardRoute

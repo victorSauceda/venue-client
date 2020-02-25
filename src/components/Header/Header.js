@@ -38,7 +38,7 @@ const Header = props => {
       userHasAuthenticated(true);
     } catch (e) {
       if (e !== "NO current user") {
-        alert(e);
+        console.log(e);
       }
     }
     setIsAuthenticating(false);
@@ -66,7 +66,16 @@ const Header = props => {
             noWrap
             className={classes.title}
           >
-            <Link color="inherit" to="/">
+            <Link
+              style={{
+                color: "white",
+                textDecoration: "none",
+                fontFamily: "cursive",
+                fontSize: "2.5rem"
+              }}
+              color="default"
+              to="/"
+            >
               Venue
             </Link>
           </Typography>
@@ -77,20 +86,29 @@ const Header = props => {
             className={classes.title}
           >
             {" "}
-            <Link color="inherit" to="/cart">
+            <Link
+              style={{
+                color: "white",
+                textDecoration: "none",
+                fontFamily: "cursive",
+                fontSize: "2.5rem"
+              }}
+              color="primary"
+              to="/cart"
+            >
               Cart
             </Link>
           </Typography>
 
-          <IconButton color="inherit">
+          {/* <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />
             </Badge>
           </IconButton>
           <IconButton color="inherit">
             <PersonIcon />
-          </IconButton>
-          {isAuthenticated ? (
+          </IconButton> */}
+          {/* {isAuthenticated ? (
             <>
               <Typography
                 variant="title"
@@ -122,7 +140,7 @@ const Header = props => {
                 Login
               </Link>
             </>
-          )}
+          )} */}
         </Toolbar>
 
         {/* <Routes appProps ={{ isAuthenticated, userHasAuthenticated}} */}
