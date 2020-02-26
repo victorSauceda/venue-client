@@ -100,6 +100,8 @@ export default function Cart(props) {
         aria-describedby="simple-modal-description"
         open={open}
         onClose={handleClose}
+        adder={props.adder}
+        appProps={props}
       >
         <div style={modalStyle} className={classes.paper}>
           <Sandbox />

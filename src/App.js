@@ -88,7 +88,7 @@ class App extends Component {
       return acc + next.price * next.qty;
     }, 0);
     console.log("adder: ", adder);
-
+    console.log(this.props);
     const childProps = {
       cartItems: this.state.cartItems,
       addToCart: this.addToCart,

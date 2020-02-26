@@ -36,8 +36,8 @@ const classes = {
   },
   card: {
     height: "100%",
-    display: "flex",
-    flexDirection: "column",
+    display: "auto",
+    flexDirection: "row",
     marginBottom: "20px !important"
   },
   cardMedia: {
@@ -72,22 +72,39 @@ class Home extends React.Component {
   render() {
     return (
       <div
-        className="container"
-        // style={{
-        //   display: "flex",
-        //   alignItems: "center",
-        //   justifyContent: "center",
-        //   flexDirection: "column"
-        // }}
+
+      // style={{
+      //   display: "flex",
+      //   alignItems: "center",
+      //   justifyContent: "center",
+      //   flexDirection: "column"
+      // }}
       >
-        <Grid xs={12} sm={6} md={4}>
+        <Grid
+          container
+          direction="row"
+          spacing={3}
+          style={{ display: "flex", overflow: "auto" }}
+        >
           {items.map((item, key) => {
             return (
-              <MenuItemComp
-                item={item}
-                addToCart={this.props.addToCart}
-                classes={classes}
-              />
+              <Grid
+                item
+                xs={12}
+                sm={3}
+                style={{
+                  marginRight: "1rem",
+                  height: "43rem",
+                  display: "flex",
+                  overflow: "auto"
+                }}
+              >
+                <MenuItemComp
+                  item={item}
+                  addToCart={this.props.addToCart}
+                  classes={classes}
+                />
+              </Grid>
             );
           })}
         </Grid>

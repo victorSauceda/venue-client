@@ -38,6 +38,21 @@ class MenuItemComp extends React.Component {
     const { item, classes } = this.props;
     return (
       <Card style={{ marginBottom: "20px" }} className={classes.card}>
+        <h3
+          style={{
+            marginTop: "15px",
+            marginBottom: "15px",
+            padding: "10px",
+            textAlign: "center",
+            height: "3rem"
+          }}
+        >
+          {item.name}
+          <span style={{ marginLeft: "15px" }}>
+            {item.distance} miles{" "}
+            <img src={item.dietTypeIcon} height="20" width="20" />
+          </span>
+        </h3>
         <img
           src={item.img}
           alt={item.alt}
@@ -53,14 +68,15 @@ class MenuItemComp extends React.Component {
             component="h2"
           ></Typography>
 
-          <Typography style={{ textAlign: "center" }}>
-            This is a media card. You can use this section to describe the
-            content.
+          <Typography style={{ textAlign: "center", height: "10rem" }}>
+            {item.description}
           </Typography>
           <Typography>Price:{item.price}</Typography>
-          <Typography>Distance:{item.distance}</Typography>
-          <Typography>Calories:{item.calories}</Typography>
-          <Typography>Diet Type:{item.dietType}</Typography>
+          <span>
+            {" "}
+            <Typography>Calories:{item.calories}</Typography>
+          </span>
+
           <Typography>Ingredients:{item.ingredients}</Typography>
         </CardContent>
 

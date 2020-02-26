@@ -48,6 +48,7 @@ const Header = props => {
     userHasAuthenticated(false);
     props.history.push("/login");
   }
+  console.log(props);
   return (
     !isAuthenticating && (
       <AppBar position="fixed">
@@ -60,12 +61,7 @@ const Header = props => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="title"
-            color="inherit"
-            noWrap
-            className={classes.title}
-          >
+          <Typography color="inherit" noWrap className={classes.title}>
             <Link
               style={{
                 color: "white",
