@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
@@ -104,10 +105,18 @@ class Home extends React.Component {
                   addToCart={this.props.addToCart}
                   classes={classes}
                 />
+                <ShoppingCartIcon
+                  style={{
+                    position: "fixed",
+                    bottom: "560px",
+                    right: "1000px"
+                  }}
+                />
               </Grid>
             );
           })}
         </Grid>
+        <ShoppingCartIcon />
       </div>
     );
   }

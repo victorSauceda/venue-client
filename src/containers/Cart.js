@@ -101,10 +101,9 @@ export default function Cart(props) {
         open={open}
         onClose={handleClose}
         adder={props.adder}
-        appProps={props}
       >
         <div style={modalStyle} className={classes.paper}>
-          <Sandbox />
+          <Sandbox appProps={props} />
           {/* <SimpleModal /> */}
         </div>
       </Modal>

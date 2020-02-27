@@ -20,8 +20,7 @@ function Stripe(props) {
   const [card, setCard] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { appProps } = props;
-  console.log(props, appProps);
-  // const [card, setCard] = useState("");
+  console.log(appProps);
 
   const handleChange = async event => {
     switch (event.target.id) {
@@ -38,44 +37,10 @@ function Stripe(props) {
         setCard(event.target.value);
         break;
     }
-    // console.log(event);
-    // setName(event.name);
-    // setEmail(event.email);
-    // setStreet(setStreet);
-    // setCard(card);
   };
 
-  async function handleFormSubmit(card, { token, error }) {
-    if (error) {
-      alert(error);
-      return;
-    }
-
-    setIsLoading(true);
-
-    try {
-      console.log("inside Handle Form submit");
-
-      await handleSubmit({
-        card,
-        source: token.id
-      });
-
-      alert("Your card has been charged successfully!");
-      appProps.history.push("/");
-    } catch (e) {
-      alert(e);
-      setIsLoading(false);
-    }
-  }
-
   async function handleSubmit(event) {
-    let body = {
-      name: name,
-      email: email,
-      street: street,
-      card: JSON.stringify(card)
-    };
+    setIsLoading(true);
 
     try {
       console.log(" handle submit clear");
@@ -85,10 +50,16 @@ function Stripe(props) {
         name: name
       });
       setIsProcessing(false);
-      handleFormSubmit(card, { token, error }); ///
-      let response = await API.post("vic", "/billing", { body });
+      let response = await API.post("vic", "/billing", {
+        body: {
+          name: name,
+          email: email,
+          street: street,
+          source: token.id,
+          amount: appProps.adder
+        }
+      });
       console.log(response);
-      console.log(body);
     } catch (e) {
       console.log(e);
     }

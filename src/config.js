@@ -1,5 +1,5 @@
 const dev = {
-  STRIPE_KEY: "pk_test_v1amvR35uoCNduJfkqGB8RLD",
+  STRIPE_KEY: "pk_test_YrkVfvkXfJctnYa9FTd6Y3P300w066reEG",
   s3: {
     REGION: "us-east-1",
     BUCKET: "bbqproj"
@@ -17,7 +17,7 @@ const dev = {
 };
 
 const prod = {
-  STRIPE_KEY: "pk_test_v1amvR35uoCNduJfkqGB8RLD",
+  STRIPE_KEY: "pk_test_YrkVfvkXfJctnYa9FTd6Y3P300w066reEG",
   s3: {
     REGION: "us-east-1",
     BUCKET: "bbqproj"

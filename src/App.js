@@ -5,7 +5,7 @@ import { MuiThemeProvider } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 
 import Home from "./containers/Home";
-import Setting from "./containers/Setting";
+import Theme from "./containers/Theme";
 import Cart from "./containers/Cart";
 
 import MainLayout from "./layouts/MainLayout";
@@ -105,8 +105,8 @@ class App extends Component {
           <Switch>
             <DashboardRoute path="/dashboard" component={Home} />
             <DashboardRoute
-              path="/setting"
-              component={Setting}
+              path="/theme"
+              component={Theme}
               appProps={childProps}
             />
             <DashboardRoute
