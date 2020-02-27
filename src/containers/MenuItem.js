@@ -60,6 +60,11 @@ class MenuItemComp extends React.Component {
           height="142"
           width="142"
         />
+        <div style={{ justifyContent: "space-evenly", display: "flex" }}>
+          <Typography>Price:{item.price}</Typography>
+          <Typography>Calories:{item.calories}</Typography>
+        </div>
+
         <CardContent className={classes.cardContent}>
           <Typography
             style={{ textAlign: "center" }}
@@ -71,28 +76,24 @@ class MenuItemComp extends React.Component {
           <Typography style={{ textAlign: "center", height: "10rem" }}>
             {item.description}
           </Typography>
-          <Typography>Price:{item.price}</Typography>
-          <span>
-            {" "}
-            <Typography>Calories:{item.calories}</Typography>
-          </span>
 
-          <Typography>Ingredients:{item.ingredients}</Typography>
-        </CardContent>
+          <span> </span>
 
-        <FormControl className={classes.formControl}>
-          <InputLabel id="demo-simple-select-label">Qty</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={this.state.quantity}
-            onChange={this.handleChange}
-          >
-            <MenuItem value={1}>1</MenuItem>
-            <MenuItem value={2}>2</MenuItem>
-            <MenuItem value={3}>3</MenuItem>
-          </Select>
-          {/* <Button
+          {/* <Typography>Ingredients:{item.ingredients}</Typography> */}
+          <div style={{ justifyContent: "space-evenly", display: "flex" }}>
+            <FormControl className={classes.formControl}>
+              <InputLabel id="demo-simple-select-label">Qty</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={this.state.quantity}
+                onChange={this.handleChange}
+              >
+                <MenuItem value={1}>1</MenuItem>
+                <MenuItem value={2}>2</MenuItem>
+                <MenuItem value={3}>3</MenuItem>
+              </Select>
+              {/* <Button
             variant="contained"
             onClick={() =>
               this.props.updateCartItem(item, this.state.quantity)
@@ -100,13 +101,15 @@ class MenuItemComp extends React.Component {
           >
             Change Qty
           </Button> */}
-        </FormControl>
-        <Button
-          variant="contained"
-          onClick={() => this.props.addToCart(item, this.state.quantity)}
-        >
-          Add to cart
-        </Button>
+            </FormControl>
+            <Button
+              variant="contained"
+              onClick={() => this.props.addToCart(item, this.state.quantity)}
+            >
+              Add to cart
+            </Button>
+          </div>
+        </CardContent>
       </Card>
     );
   }
