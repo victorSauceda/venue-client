@@ -52,7 +52,7 @@ export default function Cart(props) {
     setOpen(false);
   };
   console.log(props.adder);
-
+  console.log(props);
   return (
     <div>
       <h2>My Cart</h2>

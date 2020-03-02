@@ -6,6 +6,9 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import RemoveIcon from "@material-ui/icons/Remove";
+
 const classes = {
   icon: {
     // marginRight: theme.spacing(2)
@@ -44,55 +47,71 @@ const classes = {
 class CartItem extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      quantity: props.item.qty
-    };
-    this.handleChange = this.handleChange.bind(this);
   }
-  handleChange = event => this.setState({ quantity: event.target.value });
+  handleChangeAdd = (item, qty) => {
+    console.log("handleChange add: ", item);
+    console.log("item qty", qty);
+
+    this.props.updateCartItem(item, qty);
+  };
+
+  handleChangeMinus = (item, qty) => {
+    console.log("handleChange minus: ", item);
+    console.log("item qty", qty);
+    // Add in separate picee of logic, so if that if it goes to 0 - run remove item function
+    this.props.updateCartItem(item, qty);
+  };
   render() {
     const { item } = this.props;
+    console.log("Cart Item: ", item);
+    console.log(this.props);
+    let lessThan = this.props.item.qty - 1;
+    let moreThan = this.props.item.qty + 1;
     return (
       <TableRow key={item.name}>
         <TableCell component="th" scope="row">
           <img
             src={item.img}
             alt={item.alt}
-            style={{ height: "10rem", width: "12rem" }}
+            style={{
+              height: "10rem",
+              width: "12rem",
+              display: "block",
+              margin: "0 auto"
+            }}
             height="42"
             width="442"
           />
-          {item.name}
+          <p style={{ textAlign: "justify", width: "12rem" }}>{item.name}</p>
         </TableCell>
         <TableCell align="right">
-          <FormControl className={classes.formControl}>
-            <InputLabel id="demo-simple-select-label">Qty</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={this.state.quantity}
-              onChange={this.handleChange}
+          <div
+            style={{
+              justifyContent: "space-around",
+              display: "flex"
+            }}
+          >
+            <RemoveIcon
+              onClick={() => {
+                this.handleChangeMinus(item, lessThan);
+              }}
+              style={{ marginTop: "4px" }}
+            />
+            <p
+              style={{
+                marginLeft: "-23px",
+                marginRight: "-22px",
+                marginTop: "4px"
+              }}
             >
-              <MenuItem value={1}>1</MenuItem>
-              <MenuItem value={2}>2</MenuItem>
-              <MenuItem value={3}>3</MenuItem>
-            </Select>
-            {/* <Button
-            variant="contained"
-            onClick={() =>
-              this.props.updateCartItem(item, this.state.quantity)
-            }
-          >
-            Change Qty
-          </Button> */}
-          </FormControl>
-          <Button
-            variant="contained"
-            style={{ marginLeft: "10px" }}
-            onClick={() => this.props.updateCartItem(item, this.state.quantity)}
-          >
-            change qty
-          </Button>
+              {item.qty}
+            </p>
+
+            <AddCircleOutlineIcon
+              onClick={() => this.handleChangeAdd(item, moreThan)}
+              style={{ marginLeft: "-34px !important", marginTop: "4px" }}
+            ></AddCircleOutlineIcon>
+          </div>
         </TableCell>
         <TableCell align="right">{item.distance}</TableCell>
         <TableCell align="right">{item.calories}</TableCell>

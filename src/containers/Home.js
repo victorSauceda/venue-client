@@ -19,6 +19,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuItemComp from "./MenuItem";
 import CardMedia from "@material-ui/core/CardMedia";
+import Search from "./Search";
 
 const classes = {
   icon: {
@@ -59,16 +60,19 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
 
-    // items.reduce((acc, next) => {
-    //   return {
-    //     ...acc(
-    //       (this.state = {
-    //         [acc.name]: { quantity: 1 }
-    //       })
-    //     )
-    //   };
-    // });
+    this.state = {
+      keto: true,
+      paleo: true
+    };
   }
+
+  handleKetoActive = () => {
+    this.setState({ keto: !this.state.keto });
+  };
+
+  handlePaleoActive = () => {
+    this.setState({ paleo: !this.state.paleo });
+  };
 
   render() {
     return (
@@ -81,6 +85,12 @@ class Home extends React.Component {
       //   flexDirection: "column"
       // }}
       >
+        <Search
+          ketoActive={this.state.keto}
+          paleoActive={this.state.paleo}
+          handleKeto={this.handleKetoActive}
+          handlePaleo={this.handlePaleoActive}
+        />
         <Grid
           container
           direction="row"
@@ -89,30 +99,47 @@ class Home extends React.Component {
         >
           {items.map((item, key) => {
             return (
-              <Grid
-                item
-                xs={12}
-                sm={3}
-                style={{
-                  marginRight: "1rem",
-                  height: "43rem",
-                  display: "flex",
-                  overflow: "auto"
-                }}
-              >
-                <MenuItemComp
-                  item={item}
-                  addToCart={this.props.addToCart}
-                  classes={classes}
-                />
-                <ShoppingCartIcon
-                  style={{
-                    position: "fixed",
-                    bottom: "560px",
-                    right: "1000px"
-                  }}
-                />
-              </Grid>
+              <React.Fragment>
+                {item.dietType === "keto" && this.state.keto === true ? (
+                  <Grid
+                    item
+                    xs={12}
+                    sm={3}
+                    style={{
+                      marginRight: "1rem",
+
+                      height: "48rem",
+                      display: "flex",
+                      overflow: "auto"
+                    }}
+                  >
+                    <MenuItemComp
+                      item={item}
+                      addToCart={this.props.addToCart}
+                      classes={classes}
+                    />
+                  </Grid>
+                ) : null}
+                {item.dietType === "paleo" && this.state.paleo === true ? (
+                  <Grid
+                    item
+                    xs={12}
+                    sm={3}
+                    style={{
+                      marginRight: "1rem",
+                      height: "48rem",
+                      display: "flex",
+                      overflow: "auto"
+                    }}
+                  >
+                    <MenuItemComp
+                      item={item}
+                      addToCart={this.props.addToCart}
+                      classes={classes}
+                    />
+                  </Grid>
+                ) : null}
+              </React.Fragment>
             );
           })}
         </Grid>
@@ -121,6 +148,14 @@ class Home extends React.Component {
     );
   }
 }
+
+// <ShoppingCartIcon
+//                   style={{
+//                     position: "fixed",
+//                     bottom: "560px",
+//                     right: "1000px"
+//                   }}
+//                 />
 
 // const mapStateToProps = state => {
 //   return {
@@ -139,13 +174,3 @@ class Home extends React.Component {
 // };
 
 export default Home;
-
-{
-  /* <CardMedia
-            wide
-            className={classes.cardMedia}
-            image="https://source.unsplash.com/random"
-            title="Image title"
-            alt="kljd;kadsfl;ksfa"
-          /> */
-}

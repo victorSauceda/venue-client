@@ -66,12 +66,15 @@ class App extends Component {
     });
   }
   updateCartItem(foodobj, qty) {
+    console.log("Food Object", foodobj);
+    console.log("update cart item qty: ", qty);
     this.setState(prevState => {
       const cartItems = [...prevState.cartItems];
       const itemUpdating = cartItems.find(
         element => foodobj.name === element.name
       );
       itemUpdating.qty = qty;
+      console.log("Updated Cart Items: ", cartItems);
       return { cartItems: cartItems };
     });
   }
