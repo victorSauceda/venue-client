@@ -23,7 +23,7 @@ Amplify.configure({
     endpoints: [
       {
         name: "vic",
-        endpoint: "https://vh9vwaqea0.execute-api.us-west-2.amazonaws.com/dev",
+        endpoint: "https://3hoi6nu0ng.execute-api.us-west-2.amazonaws.com/prod",
         region: "us-west-2"
       }
     ]

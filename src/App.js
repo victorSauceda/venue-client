@@ -13,6 +13,7 @@ import EmptyLayout from "./layouts/EmptyLayout";
 import Settings from "./containers/Settings";
 import Login from "./containers/Login";
 import Sandbox from "./containers/Sandbox";
+import Admin from "./containers/Admin";
 
 const NotFound = () => {
   return <div>NotFound</div>;
@@ -116,6 +117,12 @@ class App extends Component {
               exact
               path="/"
               component={Home}
+              appProps={childProps}
+            />
+            <DashboardRoute
+              exact
+              path="/admin"
+              component={Admin}
               appProps={childProps}
             />
             <DashboardRoute

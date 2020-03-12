@@ -50,6 +50,7 @@ function Stripe(props) {
         name: name
       });
       setIsProcessing(false);
+
       let response = await API.post("vic", "/billing", {
         body: {
           name: name,
@@ -59,7 +60,13 @@ function Stripe(props) {
           amount: appProps.adder
         }
       });
-      console.log(response);
+      let transactionResponse = await API.post("vic", "/transaction", {
+        body: {
+          name: name,
+          amount: appProps.adder
+        }
+      });
+      console.log(response, transactionResponse);
     } catch (e) {
       console.log(e);
     }

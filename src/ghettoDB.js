@@ -50,7 +50,7 @@ let body = {
   restId: String,
   custId: String,
   orderId: String,
-  timeStamp: String,
+  timeStamp: { type: Date, default: Date.now },
   restName: String,
   custName: String,
   name: String,
