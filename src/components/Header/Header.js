@@ -11,6 +11,9 @@ import { withStyles } from "@material-ui/core/styles";
 import { Auth } from "aws-amplify";
 // import Link from "@material-ui/core/Link";
 import { Link } from "react-router-dom";
+import App from "../../App";
+import { Redirect } from "react-router";
+
 const styles = theme => ({
   toolbarRoot: {
     paddingRight: 24
@@ -44,11 +47,14 @@ const Header = props => {
     setIsAuthenticating(false);
   }
   async function handleLogout() {
-    await Auth.signOUt();
+    await Auth.signOut();
     userHasAuthenticated(false);
+    // return <Redirect to="/login" />;
     props.history.push("/login");
   }
-  console.log(props);
+
+  console.log("props: ", props);
+
   return (
     !isAuthenticating && (
       <AppBar position="fixed">
@@ -62,16 +68,7 @@ const Header = props => {
             <MenuIcon />
           </IconButton>
           <Typography color="inherit" noWrap className={classes.title}>
-            <Link
-              style={{
-                color: "white",
-                textDecoration: "none",
-                fontFamily: "cursive",
-                fontSize: "2.5rem"
-              }}
-              color="default"
-              to="/"
-            >
+            <Link color="default" to="/">
               Venue
             </Link>
           </Typography>
@@ -95,16 +92,36 @@ const Header = props => {
               Cart
             </Link>
           </Typography>
+          <Typography
+            variant="title"
+            color="inherit"
+            noWrap
+            className={classes.title}
+          >
+            {" "}
+            <Link
+              style={{
+                color: "white",
+                textDecoration: "none",
+                fontFamily: "cursive",
+                fontSize: "2.5rem"
+              }}
+              color="primary"
+              to="/admin"
+            >
+              Admin
+            </Link>
+          </Typography>
 
-          {/* <IconButton color="inherit">
+          <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />
             </Badge>
           </IconButton>
           <IconButton color="inherit">
             <PersonIcon />
-          </IconButton> */}
-          {/* {isAuthenticated ? (
+          </IconButton>
+          {isAuthenticated ? (
             <>
               <Typography
                 variant="title"
@@ -132,14 +149,21 @@ const Header = props => {
               <Link color="inherit" to="/signup">
                 Sign Up
               </Link>
-              <Link color="inherit" to="/login" appProps={userHasAuthenticated}>
+              <Link
+                color="inherit"
+                to={{
+                  search: "?foo=bar",
+                  pathname: "/login",
+                  state: {
+                    userHasAuthenticated: userHasAuthenticated
+                  }
+                }}
+              >
                 Login
               </Link>
             </>
-          )} */}
+          )}
         </Toolbar>
-
-        {/* <Routes appProps ={{ isAuthenticated, userHasAuthenticated}} */}
       </AppBar>
     )
   );
