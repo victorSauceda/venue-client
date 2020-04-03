@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import { API } from "aws-amplify";
 import { useFormFields } from "../libs/hooksLib";
+import { uuid } from "uuidv4";
 
 // material ui and get some forms
 function Stripe(props) {
@@ -43,37 +44,49 @@ function Stripe(props) {
     setIsLoading(true);
 
     try {
-      console.log(" handle submit clear");
+      console.log(" handle submit clear new", props);
       event.preventDefault();
       setIsProcessing(true);
       const { token, error } = await props.stripe.createToken({
         name: name
       });
       setIsProcessing(false);
+      localStorage.setItem("travic", transactionResponseBody);
 
-      let response = await API.post("vic", "/billing", {
-        body: {
-          name: name,
-          email: email,
-          street: street,
-          source: token.id,
-          amount: appProps.adder
-        }
-      });
+      let billingBody = {
+        name: name,
+        email: email,
+        street: street,
+        source: token.id,
+        amount: appProps.adder
+      };
+      let response = await API.post(
+        "vic",
+        "/billing",
+        {
+          body: billingBody
+        },
+        console.log("went through response", response)
+      );
+      let transactionResponseBody = {
+        restaurantId: uuid(),
+        orderId: uuid(),
+        createdAt: Date.now(),
+        restaurantName: name,
+        customerName: name,
+        salesTax: "0.3%",
+        total: appProps.adder,
+        cartItems: appProps.cartItems
+      };
+      console.log(transactionResponseBody);
       let transactionResponse = await API.post("vic", "/transaction", {
-        body: {
-          name: name,
-          amount: appProps.adder
-        }
+        body: transactionResponseBody
       });
-      console.log(response, transactionResponse);
+      console.log("transaction: ", transactionResponse);
     } catch (e) {
       console.log(e);
     }
   }
-  console.log(props.adder);
-  console.log("Name update: ", name);
-  console.log("Street update: '", street, " email: ", email, "card :", card);
 
   return (
     <>
