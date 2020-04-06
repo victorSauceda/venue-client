@@ -1,22 +1,24 @@
 import React from "react";
 
 import { VictoryPie } from "victory";
-import transactions from "../data/transactions";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import AdminOrders from "./AdminOrders";
 import { API } from "aws-amplify";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import Paper from "@material-ui/core/Paper";
-import items from "../data/transactions";
-import TableCell from "@material-ui/core/TableCell";
-import TableRow from "@material-ui/core/TableRow";
+import {
+  TableContainer,
+  TableHead,
+  Table,
+  TableBody,
+  Paper,
+  TableCell,
+  TableRow,
+  Grid
+} from "@material-ui/core";
 import TableForOrders from "./TableForOrders";
 import AdminMenuInput from "./AdminMenuInput";
-import Container from "@material-ui/core/Container";
+import AdminMenuItem from "./AdminMenuItem";
+import Search from "./Search";
 
 const classes = {
   icon: {
@@ -58,24 +60,50 @@ class Admin extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      notes: [],
+      transactions: [],
       cartItems: [],
       isClicked: false,
-      isAddMenuClicked: false
+      isAddMenuClicked: false,
+      menuItems: [],
+      keto: true,
+      paleo: true
     };
   }
-  async componentDidMount() {
-    const response = await API.get("vic", "/transaction");
-    console.log("Response from Mongo: ", response);
-    this.setState({ notes: response });
-  }
+  // async componentDidMount() {
+  //   const response = await API.get("vic", "/transaction");
+  //   // console.log("Response from Mongo: ", response);
+  //   this.setState({ transactions: response });
+  // }
+  // async getMenuItem() {
+  //   try {
+  //     const responseMenu = await API.get("vic", "/admin/menuitems");
+
+  //     // console.log("response", responseMenu);
+  //     this.setState({ menuItems: responseMenu });
+  //   } catch (e) {
+  //     // console.log(e);
+  //   }
+  // }
+  deleteMenuItem = async id => {
+    await API.del("vic", `/admin/menuitems/${id}`);
+    await this.getMenuItem();
+  };
+  handleKetoActive = () => {
+    this.setState({ keto: !this.state.keto });
+  };
+
+  handlePaleoActive = () => {
+    this.setState({ paleo: !this.state.paleo });
+  };
   render() {
-    console.log("this is a sanity check", this.props.cartItems);
     let filteredArray = [];
-    transactions.forEach(item => {
-      item.itemsOrdered.forEach(element => {
-        filteredArray.push(element);
-      });
+    this.state.menuItems.forEach((item, idx) => {
+      // console.log("item in admin foreach: ", item);
+      filteredArray.push(item);
+      // console.log("filtered array: ", filteredArray);
+      // item.cartItems.forEach(element => {
+      //  filteredArray.push(element);
+      // });
     });
 
     let veganCount = 0;
@@ -92,9 +120,9 @@ class Admin extends React.Component {
         paleoCount++;
       }
     });
-    console.log("vegan count:", veganCount);
-    console.log("keto count:", ketoCount);
-    console.log("paleo count:", paleoCount);
+    // console.log("vegan count:", veganCount);
+    // console.log("keto count:", ketoCount);
+    // console.log("paleo count:", paleoCount);
 
     return (
       <div>
@@ -107,6 +135,83 @@ class Admin extends React.Component {
               { x: "Vegan", y: veganCount }
             ]}
           />
+        </div>
+        <div>
+          <Search
+            ketoActive={this.state.keto}
+            paleoActive={this.state.paleo}
+            handleKeto={this.handleKetoActive}
+            handlePaleo={this.handlePaleoActive}
+          />
+          <Grid
+            container
+            direction="row"
+            spacing={3}
+            style={{
+              display: "flex",
+              overflow: "auto",
+              justifyContent: "space-evenly"
+            }}
+          >
+            {this.state.menuItems.map((item, key) => {
+              return (
+                <>
+                  {item.dietType === "keto" && this.state.keto === true ? (
+                    <Grid
+                      key={key + "grid"}
+                      item
+                      xs={12}
+                      sm={6}
+                      style={{
+                        justifyContent: "center",
+
+                        display: "flex",
+                        overflow: "auto"
+                      }}
+                    >
+                      <AdminMenuItem
+                        key={key + "menu Items"}
+                        item={item}
+                        addToCart={this.props.addToCart}
+                        classes={classes}
+                        appProps={{
+                          props: this.props,
+                          menu: this.state.menuItems
+                        }}
+                        deleteMenuItem={this.deleteMenuItem}
+                      />
+                    </Grid>
+                  ) : null}
+                  {item.dietType === "paleo" && this.state.paleo === true ? (
+                    <Grid
+                      item
+                      xs={12}
+                      key={key + "grid1"}
+                      sm={3}
+                      style={{
+                        marginRight: "1rem",
+                        height: "48rem",
+                        display: "flex",
+                        overflow: "auto"
+                      }}
+                    >
+                      <AdminMenuItem
+                        item={item}
+                        key={key}
+                        addToCart={this.props.addToCart}
+                        classes={classes}
+                        appProps={{
+                          props: this.props,
+                          menu: this.state.menuItems
+                        }}
+                        deleteMenuItem={this.deleteMenuItem}
+                      />
+                    </Grid>
+                  ) : null}
+                </>
+              );
+            })}
+          </Grid>
         </div>
         <div style={{ float: "right" }}>
           {" "}
@@ -143,7 +248,10 @@ class Admin extends React.Component {
                 fontSize: "2.5rem"
               }}
               color="default"
-              to="/admin/menuitems"
+              to={{
+                pathname: "/admin/menuitems",
+                state: { menu: this.state.menuItems }
+              }}
             >
               View Menu
             </Link>
@@ -163,8 +271,8 @@ class Admin extends React.Component {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {this.state.notes.map((note, idx) => {
-                    return <AdminOrders note={note} />;
+                  {this.state.transactions.map((transaction, idx) => {
+                    return <AdminOrders transaction={transaction} />;
                   })}
                 </TableBody>
               </Table>

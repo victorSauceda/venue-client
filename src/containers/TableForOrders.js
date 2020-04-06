@@ -45,7 +45,7 @@ const classes = {
 };
 function TableForOrders(props) {
   const { item } = props;
-  console.log("cartItems:", item);
+  // console.log("cartItems:", item);
 
   return (
     <>

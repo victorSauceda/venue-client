@@ -12,8 +12,9 @@ import Login from "./containers/Login";
 import Sandbox from "./containers/Sandbox";
 import Admin from "./containers/Admin";
 import AdminOrderDetails from "./containers/AdminOrderDetails";
-import AdminHome from "./containers/AdminHome";
+
 import StripeContainer from "./containers/StripeContainer";
+import updateMenuItem from "./containers/updateMenuItem";
 
 const NotFound = () => {
   return <div>NotFound</div>;
@@ -40,7 +41,13 @@ const RouteObject = ({ childProps }) => {
         <DashboardRoute
           path={`/admin/menuitems`}
           appProps={childProps}
-          component={AdminHome}
+          exact
+          component={Admin}
+        />
+        <DashboardRoute
+          path={`/admin/menuitems/:id`}
+          appProps={childProps}
+          component={updateMenuItem}
         />
 
         <DashboardRoute
@@ -79,14 +86,14 @@ const DashboardRoute = ({
   appProps: appProps,
   ...rest
 }) => {
-  console.log(Component);
-  console.log("appProps", appProps);
-  console.log("rest", rest);
+  // console.log(Component);
+  // console.log("appProps", appProps);
+  // console.log("rest", rest);
   return (
     <Route
       {...rest}
       render={props => {
-        console.log("props f", props);
+        // console.log("props f", props);
         return (
           <MainLayout appProps={appProps}>
             <Component appProps={appProps} {...props} {...rest} />
@@ -114,11 +121,29 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      cartItems: []
+      cartItems: [],
+      transactions: [],
+      menuItems: []
     };
     this.addToCart = this.addToCart.bind(this);
     this.updateCartItem = this.updateCartItem.bind(this);
     this.deleteCartItem = this.deleteCartItem.bind(this);
+  }
+
+  async componentDidMount() {
+    const response = await API.get("vic", "/transaction");
+    // console.log("Response from Mongo: ", response);
+    this.setState({ transactions: response });
+  }
+  async getMenuItem() {
+    try {
+      const responseMenu = await API.get("vic", "/admin/menuitems");
+
+      // console.log("response", responseMenu);
+      this.setState({ menuItems: responseMenu });
+    } catch (e) {
+      // console.log(e);
+    }
   }
 
   addToCart(foodobj, qty) {
@@ -126,20 +151,20 @@ class App extends Component {
       const cartItems = [...prevState.cartItems];
       foodobj.qty = qty;
       cartItems.push(foodobj);
-      console.log(cartItems);
+      // console.log(cartItems);
       return { cartItems: cartItems };
     });
   }
   updateCartItem(foodobj, qty) {
-    console.log("Food Object", foodobj);
-    console.log("update cart item qty: ", qty);
+    // console.log("Food Object", foodobj);
+    // console.log("update cart item qty: ", qty);
     this.setState(prevState => {
       const cartItems = [...prevState.cartItems];
       const itemUpdating = cartItems.find(
         element => foodobj.name === element.name
       );
       itemUpdating.qty = qty;
-      console.log("Updated Cart Items: ", cartItems);
+      // console.log("Updated Cart Items: ", cartItems);
       return { cartItems: cartItems };
     });
   }
@@ -155,14 +180,16 @@ class App extends Component {
     let adder = this.state.cartItems.reduce((acc, next) => {
       return acc + next.price * next.qty;
     }, 0);
-    console.log("adder: ", adder);
-    console.log(this.props);
+    // console.log("adder: ", adder);
+    // console.log(this.props);
     const childProps = {
       cartItems: this.state.cartItems,
       addToCart: this.addToCart,
       updateCartItem: this.updateCartItem,
       deleteCartItem: this.deleteCartItem,
-      adder: adder
+      adder: adder,
+      menuItems: this.state.menuItems,
+      transactions: this.state.transactions
     };
 
     return (

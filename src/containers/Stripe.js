@@ -21,7 +21,7 @@ function Stripe(props) {
   const [card, setCard] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { appProps } = props;
-  console.log(appProps);
+  // console.log(appProps);
 
   const handleChange = async event => {
     switch (event.target.id) {
@@ -44,7 +44,7 @@ function Stripe(props) {
     setIsLoading(true);
 
     try {
-      console.log(" handle submit clear new", props);
+      // console.log(" handle submit clear new", props);
       event.preventDefault();
       setIsProcessing(true);
       const { token, error } = await props.stripe.createToken({
@@ -65,8 +65,8 @@ function Stripe(props) {
         "/billing",
         {
           body: billingBody
-        },
-        console.log("went through response", response)
+        }
+        // console.log("went through response", response)
       );
       let transactionResponseBody = {
         restaurantId: uuid(),
@@ -78,13 +78,13 @@ function Stripe(props) {
         total: appProps.adder,
         cartItems: appProps.cartItems
       };
-      console.log(transactionResponseBody);
+      // console.log(transactionResponseBody);
       let transactionResponse = await API.post("vic", "/transaction", {
         body: transactionResponseBody
       });
-      console.log("transaction: ", transactionResponse);
+      // console.log("transaction: ", transactionResponse);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   }
 

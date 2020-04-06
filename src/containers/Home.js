@@ -25,8 +25,8 @@ const classes = {
 class Home extends React.Component {
   constructor(props) {
     super(props);
-    console.log("HOME PROPS");
-    console.log(props);
+    // console.log("HOME PROPS");
+    // console.log(props);
 
     this.state = {
       keto: true,
@@ -38,7 +38,7 @@ class Home extends React.Component {
   async componentDidMount() {
     try {
       const responseMenu = await API.get("vic", "/menuitems");
-      console.log("response", responseMenu);
+      // console.log("response", responseMenu);
       this.setState({ menu: responseMenu });
     } catch (e) {
       console.log(e);
@@ -53,7 +53,7 @@ class Home extends React.Component {
   };
 
   render() {
-    console.log("menu:", this.state.menu);
+    // console.log("menu:", this.state.menu);
     return (
       <div
 

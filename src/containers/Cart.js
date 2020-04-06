@@ -51,8 +51,8 @@ export default function Cart(props) {
   const handleClose = () => {
     setOpen(false);
   };
-  console.log(props.adder);
-  console.log(props);
+  // console.log(props.adder);
+  // console.log(props);
   return (
     <div>
       <h2>My Cart</h2>

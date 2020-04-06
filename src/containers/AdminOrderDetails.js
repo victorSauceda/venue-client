@@ -51,17 +51,17 @@ const classes = {
 };
 
 function AdminOrderDetails(props) {
-  console.log("admin order props: ", props);
+  // console.log("admin order props: ", props);
   const [user, setUser] = useState({
     // name: ""
   });
 
   useEffect(() => {
     const rememberMe = localStorage.getItem("travic");
-    console.log("remember me", rememberMe);
+    // console.log("remember me", rememberMe);
     setUser(rememberMe[0]);
   }, []);
-  console.log("we are looking at the user", user);
+  // console.log("we are looking at the user", user);
 
   return (
     <div>

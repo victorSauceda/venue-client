@@ -49,22 +49,22 @@ class CartItem extends React.Component {
     super(props);
   }
   handleChangeAdd = (item, qty) => {
-    console.log("handleChange add: ", item);
-    console.log("item qty", qty);
+    // console.log("handleChange add: ", item);
+    // console.log("item qty", qty);
 
     this.props.updateCartItem(item, qty);
   };
 
   handleChangeMinus = (item, qty) => {
-    console.log("handleChange minus: ", item);
-    console.log("item qty", qty);
+    // console.log("handleChange minus: ", item);
+    // console.log("item qty", qty);
     // Add in separate picee of logic, so if that if it goes to 0 - run remove item function
     this.props.updateCartItem(item, qty);
   };
   render() {
     const { item } = this.props;
-    console.log("Cart Item: ", item);
-    console.log(this.props);
+    // console.log("Cart Item: ", item);
+    // console.log(this.props);
     let lessThan = this.props.item.qty - 1;
     let moreThan = this.props.item.qty + 1;
     return (

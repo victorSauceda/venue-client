@@ -54,7 +54,7 @@ const Header = props => {
     props.history.push("/login");
   }
 
-  console.log("props: ", props);
+  console.log("propsat header: ", props);
 
   return (
     !isAuthenticating && (

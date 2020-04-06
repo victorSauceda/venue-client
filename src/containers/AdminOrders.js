@@ -12,7 +12,7 @@ import TableHead from "@material-ui/core/TableHead";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import Paper from "@material-ui/core/Paper";
-import items from "../data/transactions";
+// import items from "../data/transactions";
 
 const classes = {
   icon: {
@@ -51,31 +51,31 @@ const classes = {
   }
 };
 function AdminOrders(props) {
-  const { note } = props;
-  console.log("cartItems:", note);
+  const { transaction } = props;
+  // console.log("cartItems:", transaction);
 
   return (
     <>
-      <TableRow key={note.customerName}>
+      <TableRow key={transaction.customerName}>
         <TableCell component="th" scope="row">
-          {note.customerName}
+          {transaction.customerName}
         </TableCell>
 
-        <TableCell align="right">{note.orderId}</TableCell>
+        <TableCell align="right">{transaction.orderId}</TableCell>
         <TableCell align="right">
           <Button>
             {" "}
             <Link
               to={{
-                pathname: `admin/transaction/${note.orderId}`,
-                state: { order: note }
+                pathname: `admin/transaction/${transaction.orderId}`,
+                state: { order: transaction }
               }}
             >
               View Details
             </Link>
           </Button>
         </TableCell>
-        <TableCell align="right">{note.total}</TableCell>
+        <TableCell align="right">{transaction.total}</TableCell>
       </TableRow>
     </>
   );

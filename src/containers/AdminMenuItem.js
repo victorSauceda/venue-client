@@ -7,7 +7,7 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import RemoveIcon from "@material-ui/icons/Remove";
 import "./MenuItem.css";
 import { API } from "aws-amplify";
-
+import { Link } from "react-router-dom";
 // import sanityClient from "./client";
 // import imageUrlBuilder from "@sanity/image-url";
 // import myConfigSanityClient from "./client";
@@ -42,7 +42,17 @@ function AdminMenuItem(props) {
   //   // setIsLoading(false);
   // }
 
-  const { item, classes } = props;
+  const { item, classes, appProps } = props;
+  // console.log("menu at menu admin: ", props.location.state);
+  // console.log("props at admin menu: ", appProps.props.location.state.notes);
+  // console.log("item at admin menu: ", item);
+  const currItem = appProps.props.location.state.notes.filter(note => {
+    // console.log("note inside of admin menu filter: ", note);
+    // console.log("item inside of admin menu filter: ", item);
+    return (note._id = item._id);
+  });
+  // console.log("currItem at admin menu: ", currItem);
+
   return (
     <Card style={{ marginBottom: "20px" }}>
       <div style={{ textAlign: "center" }}>
@@ -106,6 +116,15 @@ function AdminMenuItem(props) {
             onClick={() => props.deleteMenuItem(item._id)}
           >
             Remove Item From Menu
+          </Button>
+          <Button
+            variant="contained"
+            style={{ backgroundColor: "#eaebf1" }}
+            // onClick={() => updateMenuItem(item._id)}
+          >
+            <Link to={`/admin/menuitems/${item._id}`} id={item._id}>
+              Update Item
+            </Link>
           </Button>
         </div>
       </CardContent>
