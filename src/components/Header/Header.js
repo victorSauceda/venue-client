@@ -13,6 +13,7 @@ import { Auth } from "aws-amplify";
 import { Link } from "react-router-dom";
 import App from "../../App";
 import { Redirect } from "react-router";
+import useIsAuthenticated from "../../containers/AuthHook";
 
 const styles = theme => ({
   toolbarRoot: {
@@ -30,7 +31,7 @@ const styles = theme => ({
 const Header = props => {
   const { classes, handleToggleDrawer } = props;
   const [isAuthenticating, setIsAuthenticating] = useState(true);
-  const [isAuthenticated, userHasAuthenticated] = useState(false);
+  const { isAuthenticated, setIsAuthenticated } = useIsAuthenticated();
   useEffect(() => {
     onLoad();
   }, []);
@@ -38,7 +39,7 @@ const Header = props => {
   async function onLoad() {
     try {
       await Auth.currentSession();
-      userHasAuthenticated(true);
+      setIsAuthenticated(true);
     } catch (e) {
       if (e !== "NO current user") {
         console.log(e);
@@ -48,7 +49,7 @@ const Header = props => {
   }
   async function handleLogout() {
     await Auth.signOut();
-    userHasAuthenticated(false);
+    setIsAuthenticated(false);
     // return <Redirect to="/login" />;
     props.history.push("/login");
   }
@@ -155,7 +156,7 @@ const Header = props => {
                   search: "?foo=bar",
                   pathname: "/login",
                   state: {
-                    userHasAuthenticated: userHasAuthenticated
+                    setIsAuthenticated: true
                   }
                 }}
               >

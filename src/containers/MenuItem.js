@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import CardContent from "@material-ui/core/CardContent";
@@ -11,7 +11,7 @@ import { increment, decrement } from "../store/reducers/stepCounter";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import { makeStyles } from "@material-ui/core/styles";
-import items from "../ghettoDB";
+// import items from "../ghettoDB";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
@@ -21,139 +21,127 @@ import RemoveIcon from "@material-ui/icons/Remove";
 import "./MenuItem.css";
 
 import CardMedia from "@material-ui/core/CardMedia";
+// import sanityClient from "./client";
+// import imageUrlBuilder from "@sanity/image-url";
+// import myConfigSanityClient from "./client";
+// const builder = imageUrlBuilder(myConfigSanityClient);
 
-class MenuItemComp extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      quantity: 1
-    };
-    this.handleChangeAdd = this.handleChangeAdd.bind(this);
-  }
-
-  handleChangeAdd = event => {
-    this.setState({
-      quantity: this.state.quantity + 1
-    });
+function MenuItemComp(props) {
+  const [quantity, setQuantity] = useState(1);
+  const handleChangeAdd = async event => {
+    setQuantity(quantity + 1);
   };
 
-  handleChangeMinus = event => {
-    if (this.state.quantity > 1) {
-      this.setState({
-        quantity: this.state.quantity - 1
-      });
+  const handleChangeMinus = async event => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
     }
   };
+  // useEffect(() => {
+  //   onLoad();
+  // }, []);
+  // async function onLoad() {
+  //   try {
+  //     const menuitem = await sanityClient.fetch(`
+  //       *[_type == 'menuitems']{
+  //         name, slug, image, description, diettype, price}`);
+  //     console.log("testing: ", menuitem);
+  //     this.setState = { menuItem: menuitem };
+  //   } catch (e) {
+  //     if (e !== "No current user") {
+  //       alert(e);
+  //     }
+  //   }
+  //   // setIsLoading(false);
+  // }
 
-  render() {
-    const { item, classes } = this.props;
-    return (
-      <Card style={{ marginBottom: "20px" }} className={classes.card}>
-        <h1
-          style={{
-            marginTop: "25px",
-            textAlign: "center",
-            fontFamily: "Rock Salt",
-            color: "blue",
-
-            textAlign: "center"
-          }}
-        >
-          {item.venueName}
-        </h1>
+  const { item, classes } = props;
+  return (
+    <Card style={{ marginBottom: "20px" }}>
+      <div style={{ textAlign: "center" }}>
         <h3
           style={{
             marginBottom: "15px",
-            marginTop: "10px",
-            textAlign: "center"
+            marginTop: "10px"
           }}
         >
           <em>{item.name}</em>
-
-          {/* <img src={item.dietTypeIcon} height="20" width="20" /> */}
         </h3>
-        <p
-          style={{
-            textAlign: "right",
-            marginRight: "1rem",
-            marginBottom: ".4rem"
-          }}
-        >
-          {item.distance} miles{" "}
-        </p>
+
         <img
           src={item.img}
           alt={item.alt}
-          style={{ height: "16rem", width: "22rem" }}
-          height="142"
-          width="142"
+          style={{
+            textAlign: "center"
+          }}
+          width="80%"
         />
+      </div>
+      <div
+        style={{
+          justifyContent: "space-evenly",
+          display: "flex",
+          marginTop: "20px"
+        }}
+      >
+        <Typography>
+          Price:<strong>${item.price}</strong>
+        </Typography>
+        {/* <Typography>
+          Calories:<strong>{item.calories}</strong>
+        </Typography> */}
+      </div>
+      <CardContent className={classes.cardContent}>
+        <Typography
+          style={{ textAlign: "center" }}
+          gutterBottom
+          variant="h5"
+          component="h2"
+        ></Typography>
+
+        <Typography style={{ textAlign: "center", height: "10rem" }}>
+          {item.description}
+        </Typography>
+
+        <span> </span>
+
+        {/* <Typography>Ingredients:{item.ingredients}</Typography> */}
         <div
           style={{
-            justifyContent: "space-evenly",
+            justifyContent: "space-around",
             display: "flex",
-            marginTop: "20px"
+            marginTop: "30px"
           }}
         >
-          <Typography>
-            Price:<strong>${item.price}</strong>
-          </Typography>
-          <Typography>
-            Calories:<strong>{item.calories}</strong>
-          </Typography>
-        </div>
-        <CardContent className={classes.cardContent}>
-          <Typography
-            style={{ textAlign: "center" }}
-            gutterBottom
-            variant="h5"
-            component="h2"
-          ></Typography>
-
-          <Typography style={{ textAlign: "center", height: "10rem" }}>
-            {item.description}
-          </Typography>
-
-          <span> </span>
-
-          {/* <Typography>Ingredients:{item.ingredients}</Typography> */}
-          <div
+          <RemoveIcon
+            onClick={handleChangeMinus}
+            style={{ marginTop: "7px" }}
+          />
+          <p
             style={{
-              justifyContent: "space-around",
-              display: "flex",
-              marginTop: "30px"
+              marginLeft: "-23px",
+              marginRight: "-22px",
+              marginTop: "7px"
             }}
           >
-            <RemoveIcon
-              onClick={this.handleChangeMinus}
-              style={{ marginTop: "7px" }}
-            />
-            <p
-              style={{
-                marginLeft: "-23px",
-                marginRight: "-22px",
-                marginTop: "7px"
-              }}
-            >
-              {this.state.quantity}
-            </p>
+            {quantity}
+          </p>
 
-            <AddCircleOutlineIcon
-              onClick={this.handleChangeAdd}
-              style={{ marginLeft: "-34px !important", marginTop: "7px" }}
-            ></AddCircleOutlineIcon>
+          <AddCircleOutlineIcon
+            onClick={handleChangeAdd}
+            style={{ marginLeft: "-34px !important", marginTop: "7px" }}
+          ></AddCircleOutlineIcon>
 
-            <Button
-              variant="contained"
-              style={{ backgroundColor: "#eaebf1" }}
-              onClick={() => this.props.addToCart(item, this.state.quantity)}
-            >
-              Add {this.state.quantity} to Cart
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
+          <Button
+            variant="contained"
+            style={{ backgroundColor: "#eaebf1" }}
+            onClick={() => props.addToCart(item, quantity)}
+          >
+            Add {quantity} to Cart
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
 }
 export default MenuItemComp;
