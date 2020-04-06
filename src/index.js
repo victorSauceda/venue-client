@@ -5,20 +5,19 @@ import registerServiceWorker from "./registerServiceWorker";
 import Amplify from "aws-amplify";
 import App from "./App";
 import store from "./store";
-import config from "./config";
+
 Amplify.configure({
-  // Auth: {
-  //   mandatorySignIn: true,
-  //   region: config.cognito.REGION,
-  //   userPoolId: config.cognito.USER_POOL_ID,
-  //   identityPoolId: config.cognito.IDENTITY_POOL_ID,
-  //   userPoolWebClientId: config.cognito.APP_CLIENT_ID
-  // },
-  // Storage: {
-  //   region: config.s3.REGION,
-  //   bucket: config.s3.BUCKET,
-  //   identityPoolId: config.cognito.IDENTITY_POOL_ID
-  // },
+  Auth: {
+    mandatorySignIn: true,
+    region: "us-west-2",
+    userPoolId: "us-west-2_EGFH684Go",
+    identityPoolId: "us-west-2:77652e92-bc52-4388-9937-e0eabe5e44b2",
+    userPoolWebClientId: "5d9sm8a5a3vuqaoq1rucitnr7g"
+  },
+  Storage: {
+    region: "us-west-2",
+    bucket: "venueappimages"
+  },
   API: {
     endpoints: [
       {

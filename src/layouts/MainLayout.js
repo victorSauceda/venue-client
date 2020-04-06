@@ -41,11 +41,12 @@ class MainLayout extends Component {
   };
 
   render() {
-    const { classes, children } = this.props;
+    const { classes, children, appProps } = this.props;
+    console.log("lay out props:", this.props);
     return (
       <Fragment>
         <div className={classes.root}>
-          <Header handleToggleDrawer={this.handleToggleDrawer} />
+          <Header appProps handleToggleDrawer={this.handleToggleDrawer} />
           <main
             className={classNames(classes.content, {
               [classes.contentShift]: this.state.open
