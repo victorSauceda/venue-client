@@ -1,65 +1,56 @@
 import React, { useState } from "react";
+import Button from "@material-ui/core/Button";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Input from "@material-ui/core/Input";
 import { Auth } from "aws-amplify";
-import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
-import LoaderButton from "../components/LoaderButton";
-import { useFormFields } from "../libs/hooksLib";
 import "./Login.css";
+import useIsAuthenticated from "../containers/AuthHook";
 
 export default function Login(props) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [fields, handleFieldChange] = useFormFields({
-    email: "",
-    password: ""
-  });
+  console.log("login props: ", props);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { isAutheticated, setIsAuthenticated } = useIsAuthenticated();
 
   function validateForm() {
-    return fields.email.length > 0 && fields.password.length > 0;
+    return email.length > 0 && password.length > 0;
   }
 
   async function handleSubmit(event) {
     event.preventDefault();
-
-    setIsLoading(true);
-
     try {
-      await Auth.signIn(fields.email, fields.password);
-      props.userHasAuthenticated(true);
-      props.history.push("/");
+      await Auth.signIn(email, password);
+      alert("logged in");
+      setIsAuthenticated(true);
     } catch (e) {
       alert(e.message);
-      setIsLoading(false);
     }
   }
 
   return (
     <div className="Login">
       <form onSubmit={handleSubmit}>
-        <FormGroup controlId="email" bsSize="large">
-          <ControlLabel>Email</ControlLabel>
-          <FormControl
+        <FormControl controlId="email">
+          <InputLabel>Email</InputLabel>
+          <Input
             autoFocus
             type="email"
-            value={fields.email}
-            onChange={handleFieldChange}
+            value={email}
+            onChange={e => setEmail(e.target.value)}
           />
-        </FormGroup>
-        <FormGroup controlId="password" bsSize="large">
-          <ControlLabel>Password</ControlLabel>
-          <FormControl
+        </FormControl>
+        <FormControl controlId="password">
+          <InputLabel>Password</InputLabel>
+          <Input
+            value={password}
+            onChange={e => setPassword(e.target.value)}
             type="password"
-            value={fields.password}
-            onChange={handleFieldChange}
           />
-        </FormGroup>
-        <LoaderButton
-          block
-          type="submit"
-          bsSize="large"
-          isLoading={isLoading}
-          disabled={!validateForm()}
-        >
+        </FormControl>
+        <Button block disabled={!validateForm()} type="submit">
           Login
-        </LoaderButton>
+        </Button>
       </form>
     </div>
   );

@@ -1,41 +1,11 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-
-import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
-import Typography from "@material-ui/core/Typography";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-// import Album from "Album";
-import { increment, decrement } from "../store/reducers/stepCounter";
 import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import { makeStyles } from "@material-ui/core/styles";
-import items from "../ghettoDB";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 import MenuItemComp from "./MenuItem";
-import CardMedia from "@material-ui/core/CardMedia";
 import Search from "./Search";
+import { API } from "aws-amplify";
 
 const classes = {
-  icon: {
-    // marginRight: theme.spacing(2)
-  },
-  heroContent: {
-    // backgroundColor: theme.palette.background.paper
-    // padding: theme.spacing(8, 0, 6)
-  },
-  heroButtons: {
-    // marginTop: theme.spacing(4)
-  },
-  cardGrid: {
-    // paddingTop: theme.spacing(8),
-    // paddingBottom: theme.spacing(8)
-  },
   card: {
     height: "100%",
     display: "auto",
@@ -50,22 +20,30 @@ const classes = {
   },
   textAlignMe: {
     textAlign: "center"
-  },
-  footer: {
-    // backgroundColor: theme.palette.background.paper,
-    // padding: theme.spacing(6)
   }
 };
 class Home extends React.Component {
   constructor(props) {
     super(props);
+    console.log("HOME PROPS");
+    console.log(props);
 
     this.state = {
       keto: true,
-      paleo: true
+      paleo: true,
+      menu: []
     };
   }
 
+  async componentDidMount() {
+    try {
+      const responseMenu = await API.get("vic", "/menuitems");
+      console.log("response", responseMenu);
+      this.setState({ menu: responseMenu });
+    } catch (e) {
+      console.log(e);
+    }
+  }
   handleKetoActive = () => {
     this.setState({ keto: !this.state.keto });
   };
@@ -75,6 +53,7 @@ class Home extends React.Component {
   };
 
   render() {
+    console.log("menu:", this.state.menu);
     return (
       <div
 
@@ -97,26 +76,27 @@ class Home extends React.Component {
           spacing={3}
           style={{ display: "flex", overflow: "auto" }}
         >
-          {items.map((item, key) => {
+          {this.state.menu.map((item, key) => {
             return (
-              <React.Fragment>
+              <>
                 {item.dietType === "keto" && this.state.keto === true ? (
                   <Grid
+                    key={key}
                     item
                     xs={12}
-                    sm={3}
+                    sm={6}
                     style={{
-                      marginRight: "1rem",
-
-                      height: "48rem",
                       display: "flex",
+                      justifyContent: "center",
                       overflow: "auto"
                     }}
                   >
                     <MenuItemComp
+                      key={key}
                       item={item}
                       addToCart={this.props.addToCart}
                       classes={classes}
+                      appProps={this.props}
                     />
                   </Grid>
                 ) : null}
@@ -124,6 +104,7 @@ class Home extends React.Component {
                   <Grid
                     item
                     xs={12}
+                    key={key + "grid1"}
                     sm={3}
                     style={{
                       marginRight: "1rem",
@@ -134,12 +115,13 @@ class Home extends React.Component {
                   >
                     <MenuItemComp
                       item={item}
+                      key={key + "menu1"}
                       addToCart={this.props.addToCart}
                       classes={classes}
                     />
                   </Grid>
                 ) : null}
-              </React.Fragment>
+              </>
             );
           })}
         </Grid>

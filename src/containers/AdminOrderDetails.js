@@ -51,6 +51,7 @@ const classes = {
 };
 
 function AdminOrderDetails(props) {
+  console.log("admin order props: ", props);
   const [user, setUser] = useState({
     // name: ""
   });

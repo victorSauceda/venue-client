@@ -3,32 +3,96 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-
 import Home from "./containers/Home";
 import Theme from "./containers/Theme";
 import Cart from "./containers/Cart";
-
 import MainLayout from "./layouts/MainLayout";
 import EmptyLayout from "./layouts/EmptyLayout";
-import Settings from "./containers/Settings";
 import Login from "./containers/Login";
 import Sandbox from "./containers/Sandbox";
 import Admin from "./containers/Admin";
+import AdminOrderDetails from "./containers/AdminOrderDetails";
+import AdminHome from "./containers/AdminHome";
+import StripeContainer from "./containers/StripeContainer";
 
 const NotFound = () => {
   return <div>NotFound</div>;
 };
+const RouteObject = ({ childProps }) => {
+  console.log("childprops in route", childProps);
+  return (
+    <Router>
+      <Switch>
+        <DashboardRoute path="/dashboard" component={Home} />
+        <DashboardRoute path="/theme" component={Theme} appProps={childProps} />
+        <DashboardRoute exact path="/" component={Home} appProps={childProps} />
+        <DashboardRoute
+          exact
+          path="/admin"
+          component={Admin}
+          appProps={childProps}
+        />
+        <DashboardRoute
+          path={`/admin/transaction/:id`}
+          appProps={childProps}
+          component={AdminOrderDetails}
+        />
+        <DashboardRoute
+          path={`/admin/menuitems`}
+          appProps={childProps}
+          component={AdminHome}
+        />
 
-const DashboardRoute = ({ component: Component, appProps, ...rest }) => {
+        <DashboardRoute
+          path="/login"
+          exact
+          component={Login}
+          appProps={childProps}
+        />
+        <DashboardRoute
+          path="/sandbox"
+          exact
+          component={Sandbox}
+          appProps={childProps}
+        />
+        <DashboardRoute
+          path="/stripeContainer"
+          exact
+          component={StripeContainer}
+          appProps={childProps}
+        />
+        <DashboardRoute path="/cart" appProps={childProps} component={Cart} />
+        <DashboardRoute
+          path="/settings"
+          appProps={childProps}
+          component={Cart}
+        />
+
+        <EmptyRoute component={NotFound} />
+      </Switch>
+    </Router>
+  );
+};
+
+const DashboardRoute = ({
+  component: Component,
+  appProps: appProps,
+  ...rest
+}) => {
   console.log(Component);
+  console.log("appProps", appProps);
+  console.log("rest", rest);
   return (
     <Route
       {...rest}
-      render={matchProps => (
-        <MainLayout>
-          <Component {...matchProps} {...appProps} />
-        </MainLayout>
-      )}
+      render={props => {
+        console.log("props f", props);
+        return (
+          <MainLayout appProps={appProps}>
+            <Component appProps={appProps} {...props} {...rest} />
+          </MainLayout>
+        );
+      }}
     />
   );
 };
@@ -105,52 +169,7 @@ class App extends Component {
       <MuiThemeProvider theme={settings.theme}>
         <CssBaseline />
         {/* <div style={{ height: "100vh" }}> */}
-        <Router>
-          <Switch>
-            <DashboardRoute path="/dashboard" component={Home} />
-            <DashboardRoute
-              path="/theme"
-              component={Theme}
-              appProps={childProps}
-            />
-            <DashboardRoute
-              exact
-              path="/"
-              component={Home}
-              appProps={childProps}
-            />
-            <DashboardRoute
-              exact
-              path="/admin"
-              component={Admin}
-              appProps={childProps}
-            />
-            <DashboardRoute
-              path="/login"
-              exact
-              component={Login}
-              appProps={childProps}
-            />
-            <DashboardRoute
-              path="/sandbox"
-              exact
-              component={Sandbox}
-              appProps={childProps}
-            />
-            <DashboardRoute
-              path="/cart"
-              appProps={childProps}
-              component={Cart}
-            />
-            <DashboardRoute
-              path="/settings"
-              appProps={childProps}
-              component={Cart}
-            />
-
-            <EmptyRoute component={NotFound} />
-          </Switch>
-        </Router>
+        <RouteObject childProps={childProps} />
         {/* </div> */}
       </MuiThemeProvider>
     );
