@@ -134,15 +134,11 @@ function AdminMenuItem(props) {
           <Button
             variant="contained"
             style={{ backgroundColor: "#eaebf1" }}
-            // onClick={() => updateMenuItem(item._id)}
+            onClick={() => props.updateMenuItem(item._id)}
           >
             <Link
               to={{
-                search: "?foo=bar",
-                pathname: `/admin/menuitems/${item._id}/update`,
-                state: {
-                  item: this.stateitem._id
-                }
+                pathname: `/admin/menuitems/${item._id}/update`
               }}
             >
               Update Item

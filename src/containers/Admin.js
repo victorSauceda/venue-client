@@ -72,24 +72,13 @@ class Admin extends React.Component {
     };
   }
 
-  // async componentDidMount() {
-  //   const response = await API.get("vic", "/transaction");
-  //   // console.log("Response from Mongo: ", response);
-  //   this.setState({ transactions: response });
-  // }
-  // async getMenuItem() {
-  //   try {
-  //     const responseMenu = await API.get("vic", "/admin/menuitems");
-
-  //     // console.log("response", responseMenu);
-  //     this.setState({ menuItems: responseMenu });
-  //   } catch (e) {
-  //     // console.log(e);
-  //   }
-  // }
   deleteMenuItem = async id => {
     await API.del("vic", `/admin/menuitems/${id}`);
-    await this.getMenuItem();
+    // await this.getMenuItem();
+  };
+  updateMenuItem = async id => {
+    await API.put("vic", `/admin/menuitems/${id}`);
+    // await this.getMenuItem();
   };
   handleKetoActive = () => {
     this.setState({ keto: !this.state.keto });
@@ -252,6 +241,7 @@ class Admin extends React.Component {
                           classes={classes}
                           appProps={{ ...this.props }}
                           deleteMenuItem={this.deleteMenuItem}
+                          updateMenuItem={this.updateMenuItem}
                         />
                       </Grid>
                     ) : null}
@@ -278,6 +268,7 @@ class Admin extends React.Component {
                             menu: this.state.menuItems
                           }}
                           deleteMenuItem={this.deleteMenuItem}
+                          updateMenuItem={this.updateMenuItem}
                         />
                       </Grid>
                     ) : null}

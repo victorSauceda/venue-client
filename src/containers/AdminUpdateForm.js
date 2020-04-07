@@ -9,33 +9,25 @@ import { uuid } from "uuidv4";
 import { s3Upload } from "../libs/awsLibs";
 import config from "../config";
 import AWS from "aws-sdk";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
+import { withRouter } from "react-router-dom";
 const file = React.createRef();
-
-const initState = {
-  name: "",
-  description: "",
-  imgSrc: "",
-  alt: "",
-  price: "",
-  inStock: "",
-  dietType: "",
-  content: "",
-  isLoading: false
-};
 
 const AdminUpdateForm = props => {
   console.log("admin update props: ", props);
 
   const [menuItem, setMenuItem] = useState({});
+  const [loading, setLoading] = useState(true);
   let { id } = useParams();
+  console.log("id: ", id);
   useEffect(() => {
     let aborted = false;
-    const load = async () => {
-      setMenuItem(initState);
-    };
-    setLoading(true);
-    load();
+    let filterArr = props.appProps.menuItems.filter(currId => currId._id == id);
+    console.log("filterArr: ", filterArr);
+    setMenuItem(...filterArr);
+
+    // setLoading(true);
+
     return () => (aborted = true);
   }, [id]);
 
@@ -59,90 +51,88 @@ const AdminUpdateForm = props => {
   //   }
 
   //   validateForm() {
-  //     return this.state.content.length > 0;
+  //     return menuItem.content.length > 0;
   //   }
 
   //   const handleFileChange=(event)=>{
   //     file.current = event.target.files[0];
   //   }
 
-  //   const handleChange = async event => {
-  //     this.setState({
-  //       [event.target.name]: event.target.value
-  //     });
-  //   };
+  const handleChange = async event => {
+    setMenuItem({ ...menuItem, [event.target.name]: event.target.value });
+  };
 
-  //   const handleSubmit = async event => {
-  //     event.preventDefault();
+  const handleSubmit = async event => {
+    event.preventDefault();
+    if (file.current && file.current.size > config.MAX_ATTACHMENT_SIZE) {
+      alert(
+        `Please pick a file smaller than ${config.MAX_ATTACHMENT_SIZE /
+          1000000} MB.`
+      );
+      return;
+    }
 
-  //     if (file.current && file.current.size > config.MAX_ATTACHMENT_SIZE) {
-  //       alert(
-  //         `Please pick a file smaller than ${config.MAX_ATTACHMENT_SIZE /
-  //           1000000} MB.`
-  //       );
-  //       return;
-  //     }
+    //    isLoading(true);
 
-  //     this.setState({ isLoading: true });
+    let body = {
+      name: menuItem.name,
+      description: menuItem.description,
+      img: menuItem.imgSrc,
+      alt: menuItem.alt,
+      price: menuItem.price,
+      dietType: menuItem.dietType,
+      inStock: menuItem.inStock
+    };
 
-  //     let body = {
-  //       name: this.state.name,
-  //       description: this.state.description,
-  //       img: this.state.imgSrc,
-  //       alt: this.state.alt,
-  //       price: this.state.price,
-  //       dietType: this.state.dietType,
-  //       inStock: this.state.inStock
-  //     };
+    console.log(body);
 
-  //     console.log(body);
+    try {
+      await API.post("vic", "/admin/menuitems", { body });
+      // console.log("file: ", file);
+      // const attachment = file.current
+      //   ? await s3Upload(file.current, "something.jpg")
+      //   : null;
+      // console.log("attachment: ", attachment);
+      props.history.push("/admin/menuitems");
+    } catch (e) {
+      console.log(e);
+      // setState({ isLoading: false });
+    }
 
-  //     try {
-  //       await API.post("vic", "/admin/menuitems", { body });
-  //       // console.log("file: ", file);
-  //       // const attachment = file.current
-  //       //   ? await s3Upload(file.current, "something.jpg")
-  //       //   : null;
-  //       // console.log("attachment: ", attachment);
-  //     } catch (e) {
-  //       console.log(e);
-  //       // this.setState({ isLoading: false });
-  //     }
+    // try {
+    //   //   await API.post("vic", "/admin/menuitems", { body });
+    //   console.log("file: ", file);
+    //   const attachment = file.current
+    //     ? await s3Function(file.current, "something.jpg")
+    //     : null;
+    //   console.log("attachment: ", attachment);
+    // } catch (e) {
+    //   console.log(e);
+    // }
 
-  //     // try {
-  //     //   //   await API.post("vic", "/admin/menuitems", { body });
-  //     //   console.log("file: ", file);
-  //     //   const attachment = file.current
-  //     //     ? await this.s3Function(file.current, "something.jpg")
-  //     //     : null;
-  //     //   console.log("attachment: ", attachment);
-  //     // } catch (e) {
-  //     //   console.log(e);
-  //     // }
+    //     try {
+    //       const responseSave = await API.post("vic", "/save", {
+    //         image_url: state.imgSrc,
+    //         key: state.imgSrc
+    //       });
+    //       console.log(" save response", responseSave);
+    //     } catch (e) {
+    //       console.log(e);
+    //     }
+    //   };
+  };
+  //     render() {
+  //   console.log("props from update form: ", props);
+  //   const style = {
+  //     marginTop: "45px"
+  //   }
 
-  //     //     try {
-  //     //       const responseSave = await API.post("vic", "/save", {
-  //     //         image_url: this.state.imgSrc,
-  //     //         key: this.state.imgSrc
-  //     //       });
-  //     //       console.log(" save response", responseSave);
-  //     //     } catch (e) {
-  //     //       console.log(e);
-  //     //     }
-  //     //   };
-  //   };
-  //   render() {
-  // console.log("props from update form: ", this.props);
-  // const style = {
-  //   marginTop: "45px"
-  // }
-  // };
   return (
     <>
       <form
         //   className="feedback-form"
         style={{ display: "flex", flexDirection: "column" }}
-        onSubmit={this.handleSubmit}
+        onSubmit={handleSubmit}
       >
         <h1 className="text-center">Add items to the Menu</h1>
 
@@ -152,9 +142,9 @@ const AdminUpdateForm = props => {
             type="text"
             placeholder="name@example.com"
             name="name"
-            onChange={this.handleChange}
+            onChange={handleChange}
             //   required
-            value={this.state.name}
+            value={menuItem.name}
           />
         </FormControl>
         <FormControl controlId="exampleForm.ControlInput1">
@@ -163,9 +153,9 @@ const AdminUpdateForm = props => {
             type="text"
             placeholder="please add a description of the item"
             name="description"
-            onChange={this.handleChange}
+            onChange={handleChange}
             //   required
-            value={this.state.description}
+            value={menuItem.description}
           />
         </FormControl>
         <FormControl controlId="exampleForm.ControlInput1">
@@ -174,9 +164,9 @@ const AdminUpdateForm = props => {
             type="text"
             placeholder="How many items are in stock"
             name="dietType"
-            onChange={this.handleChange}
+            onChange={handleChange}
             //   required
-            value={this.state.dietType}
+            value={menuItem.dietType}
           />
         </FormControl>
         <FormControl controlId="text">
@@ -185,9 +175,9 @@ const AdminUpdateForm = props => {
             type="text"
             placeholder="please attach an image"
             name="imgSrc"
-            onChange={this.handleChange}
+            onChange={handleChange}
             //   required
-            value={this.state.imgSrc}
+            value={menuItem.imgSrc}
           />
         </FormControl>
 
@@ -197,9 +187,9 @@ const AdminUpdateForm = props => {
             type="text"
             placeholder="alternate text to display in for screen readers"
             name="alt"
-            onChange={this.handleChange}
+            onChange={handleChange}
             //   required
-            value={this.state.alt}
+            value={menuItem.alt}
           />
         </FormControl>
         <FormControl controlId="exampleForm.ControlInput1">
@@ -208,9 +198,9 @@ const AdminUpdateForm = props => {
             type="text"
             placeholder="How much are you going to sell this product for"
             name="price"
-            onChange={this.handleChange}
+            onChange={handleChange}
             //   required
-            value={this.state.price}
+            value={menuItem.price}
           />
         </FormControl>
         <Button type="text" block>
@@ -224,3 +214,5 @@ const AdminUpdateForm = props => {
     </>
   );
 };
+
+export default withRouter(AdminUpdateForm);
