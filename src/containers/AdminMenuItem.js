@@ -8,6 +8,7 @@ import RemoveIcon from "@material-ui/icons/Remove";
 import "./MenuItem.css";
 import { API } from "aws-amplify";
 import { Link } from "react-router-dom";
+
 // import sanityClient from "./client";
 // import imageUrlBuilder from "@sanity/image-url";
 // import myConfigSanityClient from "./client";
@@ -15,6 +16,7 @@ import { Link } from "react-router-dom";
 
 function AdminMenuItem(props) {
   const [quantity, setQuantity] = useState(1);
+  const [menuItems, setMenuItems] = useState([]);
   const handleChangeAdd = async event => {
     setQuantity(quantity + 1);
   };
@@ -42,15 +44,27 @@ function AdminMenuItem(props) {
   //   // setIsLoading(false);
   // }
 
-  const { item, classes, appProps } = props;
-  // console.log("menu at menu admin: ", props.location.state);
-  // console.log("props at admin menu: ", appProps.props.location.state.notes);
-  // console.log("item at admin menu: ", item);
-  const currItem = appProps.props.location.state.notes.filter(note => {
-    // console.log("note inside of admin menu filter: ", note);
-    // console.log("item inside of admin menu filter: ", item);
-    return (note._id = item._id);
-  });
+  // useEffect(() => {
+  //   onLoad();
+  // }, [menuItems]);
+
+  const { item, classes } = props;
+
+  // function onLoad() {
+  //   setMenuItems(appProps.appProps.menuItems);
+  // }
+  // console.log("admin menu item props: ", menuItems);
+  // // console.log("menu at menu admin: ", props.location.state);
+  // // console.log("props at admin menu: ", appProps.props.location.state.notes);
+  // // console.log("item at admin menu: ", item);
+  // if (menuItems) {
+  //   const currItem = appProps.appProps.menuItems.filter(note => {
+  //     // console.log("note inside of admin menu filter: ", note);
+  //     // console.log("item inside of admin menu filter: ", item);
+  //     return (note._id = item._id);
+  //   });
+  // }
+
   // console.log("currItem at admin menu: ", currItem);
 
   return (
@@ -122,7 +136,15 @@ function AdminMenuItem(props) {
             style={{ backgroundColor: "#eaebf1" }}
             // onClick={() => updateMenuItem(item._id)}
           >
-            <Link to={`/admin/menuitems/${item._id}`} id={item._id}>
+            <Link
+              to={{
+                search: "?foo=bar",
+                pathname: `/admin/menuitems/${item._id}/update`,
+                state: {
+                  item: this.stateitem._id
+                }
+              }}
+            >
               Update Item
             </Link>
           </Button>

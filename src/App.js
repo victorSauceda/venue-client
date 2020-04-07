@@ -15,6 +15,9 @@ import AdminOrderDetails from "./containers/AdminOrderDetails";
 
 import StripeContainer from "./containers/StripeContainer";
 import updateMenuItem from "./containers/updateMenuItem";
+import { API } from "aws-amplify";
+import AdminUpdateForm from "./containers/AdminUpdateForm";
+import { userParams } from "react-router";
 
 const NotFound = () => {
   return <div>NotFound</div>;
@@ -34,6 +37,11 @@ const RouteObject = ({ childProps }) => {
           appProps={childProps}
         />
         <DashboardRoute
+          path={`/admin/menuitems/:id/update`}
+          appProps={childProps}
+          component={AdminUpdateForm}
+        />
+        <DashboardRoute
           path={`/admin/transaction/:id`}
           appProps={childProps}
           component={AdminOrderDetails}
@@ -44,6 +52,7 @@ const RouteObject = ({ childProps }) => {
           exact
           component={Admin}
         />
+
         <DashboardRoute
           path={`/admin/menuitems/:id`}
           appProps={childProps}
@@ -134,15 +143,16 @@ class App extends Component {
     const response = await API.get("vic", "/transaction");
     // console.log("Response from Mongo: ", response);
     this.setState({ transactions: response });
+    this.getMenuItem();
   }
   async getMenuItem() {
     try {
       const responseMenu = await API.get("vic", "/admin/menuitems");
 
-      // console.log("response", responseMenu);
+      // console.log("menu items api call", responseMenu);
       this.setState({ menuItems: responseMenu });
     } catch (e) {
-      // console.log(e);
+      console.log("api call err for menu", e);
     }
   }
 
