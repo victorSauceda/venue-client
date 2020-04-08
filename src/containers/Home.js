@@ -74,7 +74,11 @@ class Home extends React.Component {
           container
           direction="row"
           spacing={3}
-          style={{ display: "flex", overflow: "auto" }}
+          style={{
+            display: "flex",
+            justifyContent: "space-evenly",
+            overflow: "auto"
+          }}
         >
           {this.state.menu.map((item, key) => {
             return (
@@ -105,19 +109,19 @@ class Home extends React.Component {
                     item
                     xs={12}
                     key={key + "grid1"}
-                    sm={3}
+                    sm={6}
                     style={{
-                      marginRight: "1rem",
-                      height: "48rem",
                       display: "flex",
+                      justifyContent: "center",
                       overflow: "auto"
                     }}
                   >
                     <MenuItemComp
                       item={item}
                       key={key + "menu1"}
-                      addToCart={this.props.addToCart}
+                      addToCart={this.props.appProps.addToCart}
                       classes={classes}
+                      appProps={this.props}
                     />
                   </Grid>
                 ) : null}

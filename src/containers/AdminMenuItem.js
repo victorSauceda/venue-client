@@ -69,7 +69,13 @@ function AdminMenuItem(props) {
 
   return (
     <Card style={{ marginBottom: "20px" }}>
-      <div style={{ textAlign: "center" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-evenly",
+          textAlign: "center"
+        }}
+      >
         <h3
           style={{
             marginBottom: "15px",

@@ -56,6 +56,7 @@ function MenuItemComp(props) {
   // }
 
   const { item, classes } = props;
+  console.log("props to see if appprops: ", props);
   return (
     <Card style={{ marginBottom: "20px" }}>
       <div style={{ textAlign: "center" }}>

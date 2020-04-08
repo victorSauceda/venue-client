@@ -11,8 +11,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { Auth } from "aws-amplify";
 // import Link from "@material-ui/core/Link";
 import { Link } from "react-router-dom";
-import App from "../../App";
-import { Redirect } from "react-router";
+
 import useIsAuthenticated from "../../containers/AuthHook";
 
 const styles = theme => ({

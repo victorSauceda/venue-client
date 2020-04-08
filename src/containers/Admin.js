@@ -15,7 +15,6 @@ import {
   TableRow,
   Grid
 } from "@material-ui/core";
-import TableForOrders from "./TableForOrders";
 import AdminMenuInput from "./AdminMenuInput";
 import AdminMenuItem from "./AdminMenuItem";
 import Search from "./Search";
@@ -35,13 +34,7 @@ const classes = {
     // paddingTop: theme.spacing(8),
     // paddingBottom: theme.spacing(8)
   },
-  card: {
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-    marginBottom: "20px !important",
-    width: "35% !important "
-  },
+
   cardMedia: {
     paddingTop: "56.25%" // 16:9
   },
@@ -54,6 +47,12 @@ const classes = {
   footer: {
     // backgroundColor: theme.palette.background.paper,
     // padding: theme.spacing(6)
+  },
+  card: {
+    height: "100%",
+    display: "auto",
+    flexDirection: "row",
+    marginBottom: "20px !important"
   }
 };
 class Admin extends React.Component {
@@ -103,13 +102,13 @@ class Admin extends React.Component {
     let ketoCount = 0;
     let paleoCount = 0;
     filteredArray.map(item => {
-      if (item.dietType == "vegan") {
+      if (item.dietType === "vegan") {
         veganCount++;
       }
-      if (item.dietType == "keto") {
+      if (item.dietType === "keto") {
         ketoCount++;
       }
-      if (item.dietType == "paleo") {
+      if (item.dietType === "paleo") {
         paleoCount++;
       }
     });
@@ -150,48 +149,6 @@ class Admin extends React.Component {
           >
             <div style={{ float: "right" }}>
               {" "}
-              <Button
-                variant="contained"
-                style={{ backgroundColor: "#eaebf1", display: "flex" }}
-                onClick={() => this.setState({ isClicked: true })}
-              >
-                View Orders
-              </Button>
-              <Button
-                variant="contained"
-                style={{
-                  marginTop: "5px",
-                  backgroundColor: "#eaebf1",
-                  display: "flex"
-                }}
-                onClick={() => this.setState({ isAddMenuClicked: true })}
-              >
-                Add Menu Items
-              </Button>
-              <Button
-                variant="contained"
-                style={{
-                  marginTop: "5px",
-                  backgroundColor: "#eaebf1",
-                  display: "flex"
-                }}
-              >
-                <Link
-                  style={{
-                    color: "black",
-
-                    fontSize: "2.5rem"
-                  }}
-                  onClick={() => this.setState({ isMenuClicked: true })}
-                  color="default"
-                  to={{
-                    pathname: "/admin/menuitems",
-                    state: { menu: this.state.menuItems }
-                  }}
-                >
-                  View Menu
-                </Link>
-              </Button>
               {this.state.isAddMenuClicked ? <AdminMenuInput /> : null}
               {this.state.isClicked ? (
                 <TableContainer component={Paper}>
@@ -228,9 +185,8 @@ class Admin extends React.Component {
                         xs={12}
                         sm={6}
                         style={{
-                          justifyContent: "center",
-
                           display: "flex",
+                          justifyContent: "center",
                           overflow: "auto"
                         }}
                       >
@@ -250,11 +206,10 @@ class Admin extends React.Component {
                         item
                         xs={12}
                         key={key + "grid1"}
-                        sm={3}
+                        sm={6}
                         style={{
-                          marginRight: "1rem",
-                          height: "48rem",
                           display: "flex",
+                          justifyContent: "center",
                           overflow: "auto"
                         }}
                       >
@@ -277,6 +232,48 @@ class Admin extends React.Component {
               })}
           </Grid>
         </div>
+        <Button
+          variant="contained"
+          fullWidth
+          style={{ backgroundColor: "#eaebf1", display: "flex" }}
+          onClick={() => this.setState({ isClicked: true })}
+        >
+          View Orders
+        </Button>
+        <Button
+          variant="contained"
+          display="block"
+          fullWidth
+          style={{
+            marginTop: "1rem",
+            backgroundColor: "#eaebf1",
+            display: "flex"
+          }}
+          onClick={() => this.setState({ isAddMenuClicked: true })}
+        >
+          Add Menu Items
+        </Button>
+        <Button
+          variant="contained"
+          display="block"
+          fullWidth
+          style={{
+            marginTop: "1rem",
+            backgroundColor: "#eaebf1",
+            display: "flex"
+          }}
+        >
+          <Link
+            onClick={() => this.setState({ isMenuClicked: true })}
+            color="default"
+            to={{
+              pathname: "/admin/menuitems",
+              state: { menu: this.state.menuItems }
+            }}
+          >
+            View Menu
+          </Link>
+        </Button>
       </div>
     );
   }
