@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import CartItem from "./CartItem";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -11,6 +11,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Sandbox from "./Sandbox";
 import Modal from "@material-ui/core/Modal";
+import StripeContainer from "./StripeContainer";
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -41,7 +42,7 @@ const useStyles = makeStyles(theme => ({
 export default function Cart(props) {
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
-  const [modalStyle] = React.useState(getModalStyle);
+  const modalStyle = React.useMemo(getModalStyle, []);
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => {
@@ -56,7 +57,7 @@ export default function Cart(props) {
   return (
     <div>
       <h2>My Cart</h2>
-      {props.cartItems.length > 0 ? (
+      {props.appProps.cartItems.length > 0 ? (
         <div>
           <TableContainer component={Paper}>
             <Table aria-label="simple table">
@@ -72,27 +73,27 @@ export default function Cart(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {props.cartItems.map((item, key) => {
+                {props.appProps.cartItems.map((item, key) => {
                   return (
                     <CartItem
                       key={key}
-                      addToCart={props.addToCart}
+                      addToCart={props.appProps.addToCart}
                       item={item}
-                      updateCartItem={props.updateCartItem}
-                      deleteCartItem={props.deleteCartItem}
-                      adder={props.adder}
+                      updateCartItem={props.appProps.updateCartItem}
+                      deleteCartItem={props.appProps.deleteCartItem}
+                      adder={props.appProps.adder}
                     />
                   );
                 })}
               </TableBody>
             </Table>
           </TableContainer>
-          <h3 className="text-center"> Cart Total: ${props.adder}</h3>
+          <h3 className="text-center"> Cart Total: ${props.appProps.adder}</h3>
         </div>
       ) : (
         <p>Cart is Currently Empty</p>
       )}
-      <Button onClick={handleOpen} variant="contained">
+      <Button onClick={handleOpen} variant="contained" fullWidth>
         Check Out
       </Button>
       <Modal
@@ -100,10 +101,10 @@ export default function Cart(props) {
         aria-describedby="simple-modal-description"
         open={open}
         onClose={handleClose}
-        adder={props.adder}
+        adder={props.appProps.adder}
       >
         <div style={modalStyle} className={classes.paper}>
-          <Sandbox appProps={props} />
+          <StripeContainer appProps={props} />
           {/* <SimpleModal /> */}
         </div>
       </Modal>

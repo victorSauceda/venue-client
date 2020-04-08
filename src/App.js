@@ -68,7 +68,7 @@ const RouteObject = ({ childProps }) => {
         <DashboardRoute
           path="/sandbox"
           exact
-          component={Sandbox}
+          component={StripeContainer}
           appProps={childProps}
         />
         <DashboardRoute

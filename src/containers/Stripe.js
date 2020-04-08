@@ -58,7 +58,7 @@ function Stripe(props) {
         email: email,
         street: street,
         source: token.id,
-        amount: appProps.adder
+        amount: appProps.appProps.adder
       };
       let response = await API.post(
         "vic",

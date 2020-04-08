@@ -1,9 +1,21 @@
 import React from "react";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import Grid from "@material-ui/core/Grid";
 import MenuItemComp from "./MenuItem";
 import Search from "./Search";
 import { API } from "aws-amplify";
+import AdminOrders from "./AdminOrders";
+import {
+  TableContainer,
+  TableHead,
+  Table,
+  TableBody,
+  Paper,
+  TableCell,
+  TableRow,
+  Grid,
+  Button,
+  Modal
+} from "@material-ui/core";
 
 const classes = {
   card: {
@@ -22,6 +34,9 @@ const classes = {
     textAlign: "center"
   }
 };
+const rand = () => {
+  return Math.round(Math.random() * 20) - 10;
+};
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -31,19 +46,20 @@ class Home extends React.Component {
     this.state = {
       keto: true,
       paleo: true,
+      open: false,
       menu: []
     };
   }
 
-  async componentDidMount() {
-    try {
-      const responseMenu = await API.get("vic", "/menuitems");
-      // console.log("response", responseMenu);
-      this.setState({ menu: responseMenu });
-    } catch (e) {
-      console.log(e);
-    }
-  }
+  // async componentDidMount() {
+  //   try {
+  //     const responseMenu = await API.get("vic", "/menuitems");
+  //     // console.log("response", responseMenu);
+  //     this.setState({ menu: responseMenu });
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }
   handleKetoActive = () => {
     this.setState({ keto: !this.state.keto });
   };
@@ -51,8 +67,23 @@ class Home extends React.Component {
   handlePaleoActive = () => {
     this.setState({ paleo: !this.state.paleo });
   };
+  handleOpen = () => {
+    this.setState({ open: true });
+  };
+
+  getModalStyle() {
+    const top = 50 + rand();
+    const left = 50 + rand();
+
+    return {
+      top: `${top}%`,
+      left: `${left}%`,
+      transform: `translate(-${top}%, -${left}%)`
+    };
+  }
 
   render() {
+    console.log("homeProps:", this.props.appProps.transactions);
     // console.log("menu:", this.state.menu);
     return (
       <div
@@ -64,12 +95,22 @@ class Home extends React.Component {
       //   flexDirection: "column"
       // }}
       >
-        <Search
-          ketoActive={this.state.keto}
-          paleoActive={this.state.paleo}
-          handleKeto={this.handleKetoActive}
-          handlePaleo={this.handlePaleoActive}
-        />
+        <span style={{ display: "flex" }}>
+          <Search
+            ketoActive={this.state.keto}
+            paleoActive={this.state.paleo}
+            handleKeto={this.handleKetoActive}
+            handlePaleo={this.handlePaleoActive}
+          />{" "}
+          <Button
+            variant="contained"
+            fullWidth
+            style={{ backgroundColor: "#eaebf1", display: "flex" }}
+            onClick={() => this.setState({ open: true })}
+          >
+            View Orders
+          </Button>
+        </span>
         <Grid
           container
           direction="row"
@@ -80,7 +121,7 @@ class Home extends React.Component {
             overflow: "auto"
           }}
         >
-          {this.state.menu.map((item, key) => {
+          {this.props.appProps.menuItems.map((item, key) => {
             return (
               <>
                 {item.dietType === "keto" && this.state.keto === true ? (
@@ -92,13 +133,14 @@ class Home extends React.Component {
                     style={{
                       display: "flex",
                       justifyContent: "center",
-                      overflow: "auto"
+                      overflow: "auto",
+                      marginTop: "2rem"
                     }}
                   >
                     <MenuItemComp
                       key={key}
                       item={item}
-                      addToCart={this.props.addToCart}
+                      addToCart={this.props.appProps.addToCart}
                       classes={classes}
                       appProps={this.props}
                     />
@@ -113,7 +155,8 @@ class Home extends React.Component {
                     style={{
                       display: "flex",
                       justifyContent: "center",
-                      overflow: "auto"
+                      overflow: "auto",
+                      marginTop: "2rem"
                     }}
                   >
                     <MenuItemComp
@@ -130,6 +173,71 @@ class Home extends React.Component {
           })}
         </Grid>
         <ShoppingCartIcon />
+        {this.state.isClicked ? (
+          <TableContainer component={Paper}>
+            <Table className={classes.table} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Customer Name</TableCell>
+
+                  <TableCell align="right">Order_Id</TableCell>
+                  <TableCell align="right">Items Ordered</TableCell>
+
+                  <TableCell align="right">Price</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {this.props.appProps.transactions.map((transaction, idx) => {
+                  return transaction.customerName == "victor sauceda" ? (
+                    <AdminOrders transaction={transaction} />
+                  ) : null;
+                })}
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        ) : null}
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          open={this.state.open}
+          onClose={() => this.setState({ open: false })}
+          adder={this.props.appProps.adder}
+        >
+          <div
+            style={{
+              top: `{(50 + (Math.round(Math.random() * 20) - 10)}%`,
+              left: `50 + rand()%`,
+              transform: `translate(-${top}%, -${left}%)`
+            }}
+            className={classes.paper}
+          >
+            <TableContainer component={Paper}>
+              <Table className={classes.table} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Customer Name</TableCell>
+
+                    <TableCell align="right">Order_Id</TableCell>
+                    <TableCell align="right">Items Ordered</TableCell>
+
+                    <TableCell align="right">Price</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {this.props.appProps.transactions.map((transaction, idx) => {
+                    return transaction.customerName == "victor sauceda" ? (
+                      <AdminOrders transaction={transaction} />
+                    ) : null;
+                  })}
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            {/* <StripeContainer appProps={this.props} /> */}
+            {/* <SimpleModal /> */}
+          </div>
+        </Modal>
       </div>
     );
   }
