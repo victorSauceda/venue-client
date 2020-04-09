@@ -3,10 +3,6 @@ import Button from "@material-ui/core/Button";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-import RemoveIcon from "@material-ui/icons/Remove";
-import "./MenuItem.css";
-import { API } from "aws-amplify";
 import { Link } from "react-router-dom";
 
 // import sanityClient from "./client";
@@ -69,13 +65,7 @@ function AdminMenuItem(props) {
 
   return (
     <Card style={{ marginBottom: "20px" }}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-evenly",
-          textAlign: "center"
-        }}
-      >
+      <div style={{ textAlign: "center" }}>
         <h3
           style={{
             marginBottom: "15px",
@@ -89,11 +79,13 @@ function AdminMenuItem(props) {
           src={item.img}
           alt={item.alt}
           style={{
-            textAlign: "center"
+            textAlign: "center",
+            width: "80%",
+            height: "auto"
           }}
-          width="80%"
         />
       </div>
+
       <div
         style={{
           justifyContent: "space-evenly",

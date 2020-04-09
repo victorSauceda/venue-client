@@ -126,7 +126,7 @@ const AdminUpdateForm = props => {
   //   const style = {
   //     marginTop: "45px"
   //   }
-
+  console.log("imgsrc log:", menuItem.img);
   return (
     <>
       <form
@@ -177,7 +177,7 @@ const AdminUpdateForm = props => {
             name="imgSrc"
             onChange={handleChange}
             //   required
-            value={menuItem.imgSrc}
+            value={menuItem.img}
           />
         </FormControl>
 

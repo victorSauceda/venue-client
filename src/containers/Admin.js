@@ -13,12 +13,26 @@ import {
   Paper,
   TableCell,
   TableRow,
-  Grid
+  Grid,
+  Modal
 } from "@material-ui/core";
 import AdminMenuInput from "./AdminMenuInput";
 import AdminMenuItem from "./AdminMenuItem";
 import Search from "./Search";
+const getModalStyle = () => {
+  const top = 50 + rand();
+  const left = 50 + rand();
 
+  return {
+    top: "50%",
+    left: "50%",
+    transform: `translate(10%, 10%)`,
+    maxWidth: "100%"
+  };
+};
+const rand = () => {
+  return Math.round(Math.random() * 20) - 10;
+};
 const classes = {
   icon: {
     // marginRight: theme.spacing(2)
@@ -67,7 +81,8 @@ class Admin extends React.Component {
       // menuItems: this.props.appProps.menuItems,
       keto: true,
       paleo: true,
-      isMenuClicked: false
+      isMenuClicked: false,
+      openViewOrders: false
     };
   }
 
@@ -137,106 +152,12 @@ class Admin extends React.Component {
             handleKeto={this.handleKetoActive}
             handlePaleo={this.handlePaleoActive}
           />
-          <Grid
-            container
-            direction="row"
-            spacing={3}
-            style={{
-              display: "flex",
-              overflow: "auto",
-              justifyContent: "space-evenly"
-            }}
-          >
-            <div style={{ float: "right" }}>
-              {" "}
-              {this.state.isAddMenuClicked ? <AdminMenuInput /> : null}
-              {this.state.isClicked ? (
-                <TableContainer component={Paper}>
-                  <Table className={classes.table} aria-label="simple table">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Customer Name</TableCell>
-
-                        <TableCell align="right">Order_Id</TableCell>
-                        <TableCell align="right">Items Ordered</TableCell>
-
-                        <TableCell align="right">Price</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {this.props.appProps.transactions.map(
-                        (transaction, idx) => {
-                          return <AdminOrders transaction={transaction} />;
-                        }
-                      )}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              ) : null}
-            </div>
-            {this.state.isMenuClicked &&
-              this.props.appProps.menuItems.map((item, key) => {
-                return (
-                  <>
-                    {item.dietType === "keto" && this.state.keto === true ? (
-                      <Grid
-                        key={key + "grid"}
-                        item
-                        xs={12}
-                        sm={6}
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          overflow: "auto"
-                        }}
-                      >
-                        <AdminMenuItem
-                          key={key + "menu Items"}
-                          item={item}
-                          addToCart={this.props.addToCart}
-                          classes={classes}
-                          appProps={{ ...this.props }}
-                          deleteMenuItem={this.deleteMenuItem}
-                          updateMenuItem={this.updateMenuItem}
-                        />
-                      </Grid>
-                    ) : null}
-                    {item.dietType === "paleo" && this.state.paleo === true ? (
-                      <Grid
-                        item
-                        xs={12}
-                        key={key + "grid1"}
-                        sm={6}
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          overflow: "auto"
-                        }}
-                      >
-                        <AdminMenuItem
-                          item={item}
-                          key={key}
-                          addToCart={this.props.addToCart}
-                          classes={classes}
-                          appProps={{
-                            props: this.props,
-                            menu: this.state.menuItems
-                          }}
-                          deleteMenuItem={this.deleteMenuItem}
-                          updateMenuItem={this.updateMenuItem}
-                        />
-                      </Grid>
-                    ) : null}
-                  </>
-                );
-              })}
-          </Grid>
         </div>
         <Button
           variant="contained"
           fullWidth
           style={{ backgroundColor: "#eaebf1", display: "flex" }}
-          onClick={() => this.setState({ isClicked: true })}
+          onClick={() => this.setState({ openViewOrders: true })}
         >
           View Orders
         </Button>
@@ -274,6 +195,135 @@ class Admin extends React.Component {
             View Menu
           </Link>
         </Button>
+
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          open={this.state.isMenuClicked}
+          onClose={() => this.setState({ isMenuClicked: false })}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+          // adder={props.appProps.adder}
+        >
+          <Grid
+            className={classes.paper}
+            container
+            direction="row"
+            spacing={3}
+            style={
+              (getModalStyle(),
+              {
+                display: "flex",
+                justifyContent: "space-evenly",
+                overflow: "auto"
+              })
+            }
+          >
+            {this.props.appProps.menuItems.map((item, key) => {
+              return (
+                <>
+                  {item.dietType === "keto" && this.state.keto === true ? (
+                    <Grid
+                      key={key + "grid"}
+                      item
+                      xs={12}
+                      sm={3}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        overflow: "auto"
+                      }}
+                    >
+                      <AdminMenuItem
+                        key={key + "menu Items"}
+                        item={item}
+                        addToCart={this.props.addToCart}
+                        classes={classes}
+                        appProps={{ ...this.props }}
+                        deleteMenuItem={this.deleteMenuItem}
+                        updateMenuItem={this.updateMenuItem}
+                      />
+                    </Grid>
+                  ) : null}
+                  {item.dietType === "paleo" && this.state.paleo === true ? (
+                    <Grid
+                      item
+                      key={key}
+                      xs={12}
+                      sm={3}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        overflow: "auto"
+                      }}
+                    >
+                      <AdminMenuItem
+                        item={item}
+                        key={key}
+                        addToCart={this.props.addToCart}
+                        classes={classes}
+                        appProps={{
+                          props: this.props,
+                          menu: this.state.menuItems
+                        }}
+                        deleteMenuItem={this.deleteMenuItem}
+                        updateMenuItem={this.updateMenuItem}
+                      />
+                    </Grid>
+                  ) : null}
+                </>
+              );
+            })}
+          </Grid>
+        </Modal>
+
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          open={this.state.isAddMenuClicked}
+          onClose={() => this.setState({ isAddMenuClicked: false })}
+
+          // adder={props.appProps.adder}
+        >
+          <div style={getModalStyle()} className={classes.paper}>
+            <AdminMenuInput />
+            {/* <SimpleModal /> */}
+          </div>
+        </Modal>
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          open={this.state.openViewOrders}
+          onClose={() => this.setState({ openViewOrders: false })}
+          // adder={props.appProps.adder}
+        >
+          <div style={getModalStyle()} className={classes.paper}>
+            <TableContainer component={Paper}>
+              <Table className={classes.table} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Customer Name</TableCell>
+
+                    <TableCell align="right">Order_Id</TableCell>
+                    <TableCell align="right">Items Ordered</TableCell>
+
+                    <TableCell align="right">Price</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {this.props.appProps.transactions.map((transaction, idx) => {
+                    return <AdminOrders transaction={transaction} />;
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+
+            {/* <SimpleModal /> */}
+          </div>
+        </Modal>
       </div>
     );
   }

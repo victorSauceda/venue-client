@@ -131,7 +131,11 @@ export default class AdminMenuInput extends React.Component {
       <>
         <form
           //   className="feedback-form"
-          style={{ display: "flex", flexDirection: "column" }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            backgroundColor: "white"
+          }}
           onSubmit={this.handleSubmit}
         >
           <h1 className="text-center">Add items to the Menu</h1>

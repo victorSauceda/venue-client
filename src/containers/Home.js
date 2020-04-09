@@ -34,6 +34,17 @@ const classes = {
     textAlign: "center"
   }
 };
+const getModalStyle = () => {
+  const top = 50 + rand();
+  const left = 50 + rand();
+
+  return {
+    top: "50%",
+    left: "50%",
+    transform: `translate(10%, 10%)`,
+    maxWidth: "80%"
+  };
+};
 const rand = () => {
   return Math.round(Math.random() * 20) - 10;
 };
@@ -71,17 +82,6 @@ class Home extends React.Component {
     this.setState({ open: true });
   };
 
-  getModalStyle() {
-    const top = 50 + rand();
-    const left = 50 + rand();
-
-    return {
-      top: `${top}%`,
-      left: `${left}%`,
-      transform: `translate(-${top}%, -${left}%)`
-    };
-  }
-
   render() {
     console.log("homeProps:", this.props.appProps.transactions);
     // console.log("menu:", this.state.menu);
@@ -112,6 +112,7 @@ class Home extends React.Component {
           </Button>
         </span>
         <Grid
+          className={classes.paper}
           container
           direction="row"
           spacing={3}
@@ -132,14 +133,14 @@ class Home extends React.Component {
                     sm={6}
                     style={{
                       display: "flex",
-                      justifyContent: "center",
+                      alignItems: "space-evenly",
                       overflow: "auto",
                       marginTop: "2rem"
                     }}
                   >
                     <MenuItemComp
-                      key={key}
                       item={item}
+                      key={key}
                       addToCart={this.props.appProps.addToCart}
                       classes={classes}
                       appProps={this.props}
@@ -148,20 +149,20 @@ class Home extends React.Component {
                 ) : null}
                 {item.dietType === "paleo" && this.state.paleo === true ? (
                   <Grid
+                    key={key}
                     item
                     xs={12}
-                    key={key + "grid1"}
                     sm={6}
                     style={{
                       display: "flex",
-                      justifyContent: "center",
+                      alignItems: "space-evenly",
                       overflow: "auto",
                       marginTop: "2rem"
                     }}
                   >
                     <MenuItemComp
                       item={item}
-                      key={key + "menu1"}
+                      key={key}
                       addToCart={this.props.appProps.addToCart}
                       classes={classes}
                       appProps={this.props}
@@ -205,11 +206,13 @@ class Home extends React.Component {
           adder={this.props.appProps.adder}
         >
           <div
-            style={{
-              top: `{(50 + (Math.round(Math.random() * 20) - 10)}%`,
-              left: `50 + rand()%`,
-              transform: `translate(-${top}%, -${left}%)`
-            }}
+            style={getModalStyle()}
+            // style={{
+            //   top: 50 + (Math.round(Math.random() * 20) - 10) + "%",
+            //   left: 50 + (Math.round(Math.random() * 20) - 10) + "%",
+            //   transform: `translate(-${50 +
+            //     (Math.round(Math.random() * 20) - 10)}%, -${left}%)`
+            // }}
             className={classes.paper}
           >
             <TableContainer component={Paper}>

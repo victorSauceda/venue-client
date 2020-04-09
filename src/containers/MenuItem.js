@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
-import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
 import Typography from "@material-ui/core/Typography";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 // import Album from "Album";
 import { increment, decrement } from "../store/reducers/stepCounter";
-import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import { makeStyles } from "@material-ui/core/styles";
-// import items from "../ghettoDB";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
@@ -73,9 +69,12 @@ function MenuItemComp(props) {
           src={item.img}
           alt={item.alt}
           style={{
-            textAlign: "center"
+            textAlign: "center",
+            width: "25rem",
+            height: "auto",
+            minHeight: "20rem",
+            objectFit: "cover"
           }}
-          width="80%"
         />
       </div>
       <div
