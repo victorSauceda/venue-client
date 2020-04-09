@@ -126,7 +126,7 @@ const AdminUpdateForm = props => {
   //   const style = {
   //     marginTop: "45px"
   //   }
-  console.log("imgsrc log:", menuItem.img);
+  // console.log("imgsrc log:", menuItem.img);
   return (
     <>
       <form

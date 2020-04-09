@@ -156,10 +156,11 @@ class App extends Component {
     }
   }
 
-  addToCart(foodobj, qty) {
+  addToCart(foodobj, qty, description) {
     this.setState(prevState => {
       const cartItems = [...prevState.cartItems];
       foodobj.qty = qty;
+      foodobj.orderDescription = description;
       cartItems.push(foodobj);
       // console.log(cartItems);
       return { cartItems: cartItems };
