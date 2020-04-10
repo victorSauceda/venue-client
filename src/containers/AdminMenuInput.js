@@ -91,14 +91,14 @@ export default class AdminMenuInput extends React.Component {
 
     try {
       await API.post("vic", "/admin/menuitems", { body });
-      // console.log("file: ", file);
-      // const attachment = file.current
-      //   ? await s3Upload(file.current, "something.jpg")
-      //   : null;
-      // console.log("attachment: ", attachment);
+      console.log("file: ", file);
+      const attachment = file.current
+        ? await s3Upload(file.current, "something.jpg")
+        : null;
+      console.log("attachment: ", attachment);
     } catch (e) {
       console.log(e);
-      // this.setState({ isLoading: false });
+      this.setState({ isLoading: false });
     }
 
     // try {
@@ -173,10 +173,10 @@ export default class AdminMenuInput extends React.Component {
               value={this.state.dietType}
             />
           </FormControl>
-          <FormControl controlId="text">
+          <FormControl controlId="file">
             <InputLabel>Attachment</InputLabel>
             <Input
-              type="text"
+              type="file"
               placeholder="please attach an image"
               name="imgSrc"
               onChange={this.handleChange}
