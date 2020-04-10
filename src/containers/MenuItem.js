@@ -189,15 +189,15 @@ function MenuItemComp(props) {
             }}
             onSubmit={handleSubmit}
           >
-            <FormControl controlId="exampleForm.ControlInput1">
+            <FormControl controlId="orderDescription">
               <InputLabel>Customize Order</InputLabel>
               <Input
                 type="text"
                 placeholder="Customize Order"
-                name="name"
-                onChange={handleFieldChange}
-                // required
                 value={fields.orderDescription}
+                onChange={handleFieldChange}
+                id="orderDescription"
+                // required
               />
               {console.log("fields: ", fields)}
             </FormControl>
