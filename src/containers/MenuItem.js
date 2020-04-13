@@ -180,14 +180,15 @@ function MenuItemComp(props) {
         adder={props.appProps.adder}
       >
         <div
-          style={{ top: "70%", left: "70%", transform: `translate(10%, 10%)` }}
+          style={{ top: "70%", left: "70%", transform: `translate(20%, 20%)` }}
         >
           <form
             //   className="feedback-form"
             style={{
               display: "flex",
               flexDirection: "column",
-              backgroundColor: "white"
+              backgroundColor: "white",
+              padding: "20px"
             }}
             onSubmit={handleSubmit}
           >
