@@ -179,7 +179,9 @@ function MenuItemComp(props) {
         onClose={() => setIsClicked(false)}
         adder={props.appProps.adder}
       >
-        <div style={{ top: "50%", left: "50%" }}>
+        <div
+          style={{ top: "70%", left: "70%", transform: `translate(10%, 10%)` }}
+        >
           <form
             //   className="feedback-form"
             style={{
