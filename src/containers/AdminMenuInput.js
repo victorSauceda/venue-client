@@ -57,7 +57,9 @@ export default class AdminMenuInput extends React.Component {
   handleFileChange(event) {
     file.current = event.target.files[0];
   }
-
+  formatFilename(str) {
+    return str.replace(/^\w+-/, "");
+  }
   handleChange = async event => {
     this.setState({
       [event.target.name]: event.target.value
@@ -80,7 +82,7 @@ export default class AdminMenuInput extends React.Component {
     let body = {
       name: this.state.name,
       description: this.state.description,
-      img: this.state.imgSrc,
+      img: file.current,
       alt: this.state.alt,
       price: this.state.price,
       dietType: this.state.dietType,
@@ -91,6 +93,7 @@ export default class AdminMenuInput extends React.Component {
 
     try {
       await API.post("vic", "/admin/menuitems", { body });
+      console.log("body: ", body);
       console.log("file: ", file);
       const attachment = file.current
         ? await s3Upload(file.current, "something.jpg")
@@ -179,9 +182,9 @@ export default class AdminMenuInput extends React.Component {
               type="file"
               placeholder="please attach an image"
               name="imgSrc"
-              onChange={this.handleChange}
+              onChange={this.handleFileChange}
               //   required
-              value={this.state.imgSrc}
+              // value={this.state.imgSrc}
             />
           </FormControl>
 

@@ -12,7 +12,9 @@ Amplify.configure({
     region: "us-west-2",
     userPoolId: "us-west-2_EGFH684Go",
     identityPoolId: "us-west-2:77652e92-bc52-4388-9937-e0eabe5e44b2",
-    userPoolWebClientId: "sjs500akrl9vq40ogm168qfnq"
+    userPoolWebClientId: "sjs500akrl9vq40ogm168qfnq",
+    roleArn:
+      "arn:aws:iam::176681666421:role/Cognito_venueidentitypoolUnauth_Role"
     // userPoolWebClientId: "5d9sm8a5a3vuqaoq1rucitnr7g"
   },
   Storage: {
