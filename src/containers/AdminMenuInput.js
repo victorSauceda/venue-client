@@ -11,32 +11,49 @@ import config from "../config";
 import AWS from "aws-sdk";
 const file = React.createRef();
 
+import React, { useState, useEffect } from "react";
+
+const AdminMenuInput = (props) => {
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [alt, setAlt] = useState("");
+  const [price, setPrice] = useState("");
+  const [inStock, setInStock] = useState("");
+  const [dietType, setDietType] = useState("");
+  const [content, setContent] = useState("");
+  const [isLoading, setIsLoading] = useState("");
+
+  return <></>;
+};
+
+export default AdminMenuInput;
+
 export default class AdminMenuInput extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      name: "",
-      description: "",
-      imgSrc: "",
-      alt: "",
-      price: "",
-      inStock: "",
-      dietType: "",
-      content: "",
-      isLoading: false
-    };
+    // this.state = {
+    //   name: "",
+    //   description: "",
+    //   imgSrc: "",
+    //   alt: "",
+    //   price: "",
+    //   inStock: "",
+    //   dietType: "",
+    //   content: "",
+    //   isLoading: false,
+    // };
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.s3Function = this.s3Function.bind(this);
-  }
+  //   this.handleChange = this.handleChange.bind(this);
+  //   this.handleSubmit = this.handleSubmit.bind(this);
+  //   this.s3Function = this.s3Function.bind(this);
+  // }
   s3Function(file, filenameParameter) {
     const s3 = new AWS.S3({
       region: "us-west-2",
       params: {
-        Bucket: "venueappimages"
-      }
+        Bucket: "venueappimages",
+      },
     });
     let filename = filenameParameter;
     return s3
@@ -45,7 +62,7 @@ export default class AdminMenuInput extends React.Component {
         Body: file,
         ContentType: file.type,
         ACL: "public-write",
-        CacheControl: "no-cache"
+        CacheControl: "no-cache",
       })
       .promise();
   }
@@ -60,19 +77,20 @@ export default class AdminMenuInput extends React.Component {
   formatFilename(str) {
     return str.replace(/^\w+-/, "");
   }
-  handleChange = async event => {
+  handleChange = async (event) => {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
 
-  handleSubmit = async event => {
+  handleSubmit = async (event) => {
     event.preventDefault();
 
     if (file.current && file.current.size > config.MAX_ATTACHMENT_SIZE) {
       alert(
-        `Please pick a file smaller than ${config.MAX_ATTACHMENT_SIZE /
-          1000000} MB.`
+        `Please pick a file smaller than ${
+          config.MAX_ATTACHMENT_SIZE / 1000000
+        } MB.`
       );
       return;
     }
@@ -82,28 +100,28 @@ export default class AdminMenuInput extends React.Component {
     let body = {
       name: this.state.name,
       description: this.state.description,
-      img: file.current,
+
       alt: this.state.alt,
       price: this.state.price,
       dietType: this.state.dietType,
-      inStock: this.state.inStock
+      inStock: this.state.inStock,
     };
 
     console.log(body);
 
     try {
-      await API.post("vic", "/admin/menuitems", { body });
       console.log("body: ", body);
       console.log("file: ", file);
       const attachment = file.current
         ? await s3Upload(file.current, "something.jpg")
         : null;
       console.log("attachment: ", attachment);
+      body.img = attachement;
+      await API.post("vic", "/admin/menuitems", { body });
     } catch (e) {
       console.log(e);
       this.setState({ isLoading: false });
     }
-
     // try {
     //   //   await API.post("vic", "/admin/menuitems", { body });
     //   console.log("file: ", file);
@@ -128,7 +146,7 @@ export default class AdminMenuInput extends React.Component {
   };
   render() {
     const style = {
-      marginTop: "45px"
+      marginTop: "45px",
     };
     return (
       <>
@@ -137,7 +155,7 @@ export default class AdminMenuInput extends React.Component {
           style={{
             display: "flex",
             flexDirection: "column",
-            backgroundColor: "white"
+            backgroundColor: "white",
           }}
           onSubmit={this.handleSubmit}
         >
