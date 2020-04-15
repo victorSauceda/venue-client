@@ -10,24 +10,25 @@ import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import { Auth } from "aws-amplify";
 // import Link from "@material-ui/core/Link";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import useIsAuthenticated from "../../containers/AuthHook";
 
-const styles = theme => ({
+const styles = (theme) => ({
   toolbarRoot: {
-    paddingRight: 24
+    paddingRight: 24,
   },
   menuButton: {
     marginLeft: 12,
-    marginRight: 36
+    marginRight: 36,
   },
   title: {
-    flexGrow: 1
-  }
+    flexGrow: 1,
+  },
 });
 
-const Header = props => {
+const Header = (props) => {
+  const history = useHistory();
   const { classes, handleToggleDrawer } = props;
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const { isAuthenticated, setIsAuthenticated } = useIsAuthenticated();
@@ -50,7 +51,7 @@ const Header = props => {
     await Auth.signOut();
     setIsAuthenticated(false);
     // return <Redirect to="/login" />;
-    props.history.push("/login");
+    history.push("/login");
   }
 
   console.log("propsat header: ", props);
@@ -84,7 +85,7 @@ const Header = props => {
                 color: "white",
                 textDecoration: "none",
                 fontFamily: "cursive",
-                fontSize: "2.5rem"
+                fontSize: "2.5rem",
               }}
               color="primary"
               to="/cart"
@@ -104,7 +105,7 @@ const Header = props => {
                 color: "white",
                 textDecoration: "none",
                 fontFamily: "cursive",
-                fontSize: "2.5rem"
+                fontSize: "2.5rem",
               }}
               color="primary"
               to="/admin"
@@ -155,8 +156,8 @@ const Header = props => {
                   search: "?foo=bar",
                   pathname: "/login",
                   state: {
-                    setIsAuthenticated: true
-                  }
+                    setIsAuthenticated: true,
+                  },
                 }}
               >
                 Login
