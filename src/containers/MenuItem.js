@@ -12,7 +12,7 @@ import {
   Modal,
   Typography,
   CardContent,
-  Button
+  Button,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
@@ -34,7 +34,7 @@ function getModalStyle() {
   return {
     top: `${top}%`,
     left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`
+    transform: `translate(-${top}%, -${left}%)`,
   };
 }
 
@@ -44,18 +44,18 @@ function MenuItemComp(props) {
   const [isClicked, setIsClicked] = useState(false);
   const modalStyle = React.useMemo(getModalStyle, []);
   const [fields, handleFieldChange] = useFormFields({
-    orderDescription: ""
+    orderDescription: "",
   });
-  const handleChangeAdd = async event => {
+  const handleChangeAdd = async (event) => {
     setQuantity(quantity + 1);
   };
 
-  const handleChangeMinus = async event => {
+  const handleChangeMinus = async (event) => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
     }
   };
-  const handleSubmit = async event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     props.addToCart(item, quantity, fields.orderDescription);
     console.log("orderDescription: ", fields.orderDescription);
@@ -89,7 +89,7 @@ function MenuItemComp(props) {
           <h3
             style={{
               marginBottom: "15px",
-              marginTop: "10px"
+              marginTop: "10px",
             }}
           >
             <em>{item.name}</em>
@@ -103,7 +103,7 @@ function MenuItemComp(props) {
               width: "25rem",
               height: "auto",
               minHeight: "20rem",
-              objectFit: "cover"
+              objectFit: "cover",
             }}
           />
         </div>
@@ -111,7 +111,7 @@ function MenuItemComp(props) {
           style={{
             justifyContent: "space-evenly",
             display: "flex",
-            marginTop: "20px"
+            marginTop: "20px",
           }}
         >
           <Typography>
@@ -140,7 +140,7 @@ function MenuItemComp(props) {
             style={{
               justifyContent: "space-around",
               display: "flex",
-              marginTop: "30px"
+              marginTop: "30px",
             }}
           >
             <RemoveIcon
@@ -151,7 +151,7 @@ function MenuItemComp(props) {
               style={{
                 marginLeft: "-23px",
                 marginRight: "-22px",
-                marginTop: "7px"
+                marginTop: "7px",
               }}
             >
               {quantity}
@@ -188,7 +188,7 @@ function MenuItemComp(props) {
               display: "flex",
               flexDirection: "column",
               backgroundColor: "white",
-              padding: "20px"
+              padding: "20px",
             }}
             onSubmit={handleSubmit}
           >
@@ -197,7 +197,6 @@ function MenuItemComp(props) {
               <Input
                 type="text"
                 placeholder="Customize Order"
-                value={fields.orderDescription}
                 onChange={handleFieldChange}
                 id="orderDescription"
                 // required

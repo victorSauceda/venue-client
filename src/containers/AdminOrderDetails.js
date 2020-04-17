@@ -11,6 +11,7 @@ import TableHead from "@material-ui/core/TableHead";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import Paper from "@material-ui/core/Paper";
+import transitions from "@material-ui/core/styles/transitions";
 // import TableForOrders from "./TableForOrders";
 
 const classes = {
@@ -33,25 +34,27 @@ const classes = {
     display: "flex",
     flexDirection: "column",
     marginBottom: "20px !important",
-    width: "35% !important "
+    width: "35% !important ",
   },
   cardMedia: {
-    paddingTop: "56.25%" // 16:9
+    paddingTop: "56.25%", // 16:9
   },
   cardContent: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   textAlignMe: {
-    textAlign: "center"
+    textAlign: "center",
   },
   footer: {
     // backgroundColor: theme.palette.background.paper,
     // padding: theme.spacing(6)
-  }
+  },
 };
 
 function AdminOrderDetails(props) {
-  // console.log("admin order props: ", props);
+  console.log("admin order props: ", props.location.state);
+
+  // console.log("transaction: ", transaction);
   const [user, setUser] = useState({
     // name: ""
   });
@@ -69,31 +72,29 @@ function AdminOrderDetails(props) {
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Customer Name</TableCell>
-
-              <TableCell align="right">Order_Id</TableCell>
-              <TableCell align="right">Item Name</TableCell>
-              <TableCell align="right">Diet Type</TableCell>
+              <TableCell>Name</TableCell>
               <TableCell align="right">Qty</TableCell>
-
               <TableCell align="right">Price</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow key={user.customerName}>
-              <TableCell component="th" scope="row">
-                {user.venueName}
-              </TableCell>
-              <TableCell align="right">{user.customerName}</TableCell>
-              <TableCell align="right">{user.orderId}</TableCell>
-              <TableCell align="right">{user.dietType}</TableCell>
-              <TableCell align="right">{user.qty}</TableCell>
-              <TableCell align="right">{user.price}</TableCell>
-            </TableRow>
+            {props.location.state.transaction.cartItems.map((item, key) => {
+              console.log("item: ", item);
+              return (
+                <>
+                  <TableRow key={item.name}>
+                    <TableCell component="th" scope="row">
+                      {item.name}
+                    </TableCell>
+                    <TableCell align="right">{item.qty}</TableCell>
+                    <TableCell align="right">{item.price}</TableCell>
+                  </TableRow>
+                </>
+              );
+            })}
           </TableBody>
         </Table>
       </TableContainer>
-      {user.name}
     </div>
   );
 }

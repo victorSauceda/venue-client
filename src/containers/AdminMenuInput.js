@@ -16,6 +16,7 @@ const AdminMenuInput = (props) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [alt, setAlt] = useState("");
+  const [imgSrc, setImgSrc] = useState("");
   const [price, setPrice] = useState("");
   const [inStock, setInStock] = useState("");
   const [dietType, setDietType] = useState("");
@@ -78,6 +79,9 @@ const AdminMenuInput = (props) => {
       case "content":
         setContent(event.target.value);
         break;
+      case "imgSrc":
+        setImgSrc(event.target.value);
+        break;
     }
   };
   // };
@@ -102,7 +106,7 @@ const AdminMenuInput = (props) => {
     let body = {
       name: name,
       description: description,
-
+      img: imgSrc,
       alt: alt,
       price: price,
       dietType: dietType,
@@ -175,12 +179,12 @@ const AdminMenuInput = (props) => {
         <FormControl controlId="file">
           <InputLabel>Attachment</InputLabel>
           <Input
-            type="file"
+            type="text"
             placeholder="please attach an image"
             name="imgSrc"
-            onChange={handleFileChange}
+            onChange={handleChange}
             //   required
-            // value={this.state.imgSrc}
+            value={imgSrc}
           />
         </FormControl>
 

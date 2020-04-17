@@ -34,25 +34,25 @@ const classes = {
     display: "flex",
     flexDirection: "column",
     marginBottom: "20px !important",
-    width: "35% !important "
+    width: "35% !important ",
   },
   cardMedia: {
-    paddingTop: "56.25%" // 16:9
+    paddingTop: "56.25%", // 16:9
   },
   cardContent: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   textAlignMe: {
-    textAlign: "center"
+    textAlign: "center",
   },
   footer: {
     // backgroundColor: theme.palette.background.paper,
     // padding: theme.spacing(6)
-  }
+  },
 };
 function AdminOrders(props) {
   const { transaction } = props;
-  // console.log("cartItems:", transaction);
+  console.log("cartItems:", transaction);
 
   return (
     <>
@@ -68,7 +68,7 @@ function AdminOrders(props) {
             <Link
               to={{
                 pathname: `admin/transaction/${transaction.orderId}`,
-                state: { order: transaction }
+                state: { transaction: transaction },
               }}
             >
               View Details

@@ -101,7 +101,7 @@ const DashboardRoute = ({
   return (
     <Route
       {...rest}
-      render={props => {
+      render={(props) => {
         // console.log("props f", props);
         return (
           <MainLayout appProps={appProps}>
@@ -117,7 +117,7 @@ const EmptyRoute = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={matchProps => (
+      render={(matchProps) => (
         <EmptyLayout>
           <Component {...matchProps} />
         </EmptyLayout>
@@ -132,7 +132,7 @@ class App extends Component {
     this.state = {
       cartItems: [],
       transactions: [],
-      menuItems: []
+      menuItems: [],
     };
     this.addToCart = this.addToCart.bind(this);
     this.updateCartItem = this.updateCartItem.bind(this);
@@ -157,7 +157,7 @@ class App extends Component {
   }
 
   addToCart(foodobj, qty, description) {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       const cartItems = [...prevState.cartItems];
       foodobj.qty = qty;
       foodobj.orderDescription = description;
@@ -169,10 +169,10 @@ class App extends Component {
   updateCartItem(foodobj, qty) {
     // console.log("Food Object", foodobj);
     // console.log("update cart item qty: ", qty);
-    this.setState(prevState => {
+    this.setState((prevState) => {
       const cartItems = [...prevState.cartItems];
       const itemUpdating = cartItems.find(
-        element => foodobj.name === element.name
+        (element) => foodobj.name === element.name
       );
       itemUpdating.qty = qty;
       // console.log("Updated Cart Items: ", cartItems);
@@ -180,9 +180,9 @@ class App extends Component {
     });
   }
   deleteCartItem(foodobj) {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       const cartItems = [...prevState.cartItems];
-      let newCart = cartItems.filter(item => item.name !== foodobj.name);
+      let newCart = cartItems.filter((item) => item.name !== foodobj.name);
       return { cartItems: newCart };
     });
   }
@@ -200,7 +200,7 @@ class App extends Component {
       deleteCartItem: this.deleteCartItem,
       adder: adder,
       menuItems: this.state.menuItems,
-      transactions: this.state.transactions
+      transactions: this.state.transactions,
     };
 
     return (
@@ -214,9 +214,9 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    settings: state.settings
+    settings: state.settings,
   };
 };
 
