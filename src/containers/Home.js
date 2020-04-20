@@ -14,7 +14,7 @@ import {
   TableRow,
   Grid,
   Button,
-  Modal
+  Modal,
 } from "@material-ui/core";
 
 const classes = {
@@ -22,17 +22,17 @@ const classes = {
     height: "100%",
     display: "auto",
     flexDirection: "row",
-    marginBottom: "20px !important"
+    marginBottom: "20px !important",
   },
   cardMedia: {
-    paddingTop: "56.25%" // 16:9
+    paddingTop: "56.25%", // 16:9
   },
   cardContent: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   textAlignMe: {
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 };
 const getModalStyle = () => {
   const top = 50 + rand();
@@ -42,7 +42,7 @@ const getModalStyle = () => {
     top: "50%",
     left: "50%",
     transform: `translate(10%, 10%)`,
-    maxWidth: "80%"
+    maxWidth: "80%",
   };
 };
 const rand = () => {
@@ -58,7 +58,7 @@ class Home extends React.Component {
       keto: true,
       paleo: true,
       open: false,
-      menu: []
+      menu: [],
     };
   }
 
@@ -119,7 +119,7 @@ class Home extends React.Component {
           style={{
             display: "flex",
             justifyContent: "space-evenly",
-            overflow: "auto"
+            overflow: "auto",
           }}
         >
           {this.props.appProps.menuItems.map((item, key) => {
@@ -135,7 +135,7 @@ class Home extends React.Component {
                       display: "flex",
                       alignItems: "space-evenly",
                       overflow: "auto",
-                      marginTop: "2rem"
+                      marginTop: "2rem",
                     }}
                   >
                     <MenuItemComp
@@ -157,7 +157,7 @@ class Home extends React.Component {
                       display: "flex",
                       alignItems: "space-evenly",
                       overflow: "auto",
-                      marginTop: "2rem"
+                      marginTop: "2rem",
                     }}
                   >
                     <MenuItemComp
