@@ -73,12 +73,14 @@ function AdminOrderDetails(props) {
           <TableHead>
             <TableRow>
               <TableCell>Name</TableCell>
+              <TableCell align="right">Order Details</TableCell>
               <TableCell align="right">Qty</TableCell>
+
               <TableCell align="right">Price</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.location.state.transaction.cartItems.map((item, key) => {
+            {props.appProps.cartItems.map((item, key) => {
               console.log("item: ", item);
               return (
                 <>
@@ -86,6 +88,7 @@ function AdminOrderDetails(props) {
                     <TableCell component="th" scope="row">
                       {item.name}
                     </TableCell>
+                    <TableCell align="right">{item.orderDetails}</TableCell>
                     <TableCell align="right">{item.qty}</TableCell>
                     <TableCell align="right">{item.price}</TableCell>
                   </TableRow>

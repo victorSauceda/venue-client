@@ -52,7 +52,7 @@ const classes = {
 };
 function AdminOrders(props) {
   const { transaction } = props;
-  console.log("cartItems:", transaction);
+  console.log("2transaction: ", transaction);
 
   return (
     <>

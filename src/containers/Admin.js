@@ -14,7 +14,7 @@ import {
   TableCell,
   TableRow,
   Grid,
-  Modal
+  Modal,
 } from "@material-ui/core";
 import AdminMenuInput from "./AdminMenuInput";
 import AdminMenuItem from "./AdminMenuItem";
@@ -27,7 +27,7 @@ const getModalStyle = () => {
     top: "50%",
     left: "50%",
     transform: `translate(10%, 10%)`,
-    maxWidth: "100%"
+    maxWidth: "100%",
   };
 };
 const rand = () => {
@@ -50,13 +50,13 @@ const classes = {
   },
 
   cardMedia: {
-    paddingTop: "56.25%" // 16:9
+    paddingTop: "56.25%", // 16:9
   },
   cardContent: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   textAlignMe: {
-    textAlign: "center"
+    textAlign: "center",
   },
   footer: {
     // backgroundColor: theme.palette.background.paper,
@@ -66,8 +66,8 @@ const classes = {
     height: "100%",
     display: "auto",
     flexDirection: "row",
-    marginBottom: "20px !important"
-  }
+    marginBottom: "20px !important",
+  },
 };
 class Admin extends React.Component {
   constructor(props) {
@@ -82,15 +82,15 @@ class Admin extends React.Component {
       keto: true,
       paleo: true,
       isMenuClicked: false,
-      openViewOrders: false
+      openViewOrders: false,
     };
   }
 
-  deleteMenuItem = async id => {
+  deleteMenuItem = async (id) => {
     await API.del("vic", `/admin/menuitems/${id}`);
     // await this.getMenuItem();
   };
-  updateMenuItem = async id => {
+  updateMenuItem = async (id) => {
     await API.put("vic", `/admin/menuitems/${id}`);
     // await this.getMenuItem();
   };
@@ -116,7 +116,7 @@ class Admin extends React.Component {
     let veganCount = 0;
     let ketoCount = 0;
     let paleoCount = 0;
-    filteredArray.map(item => {
+    filteredArray.map((item) => {
       if (item.dietType === "vegan") {
         veganCount++;
       }
@@ -141,7 +141,7 @@ class Admin extends React.Component {
             data={[
               { x: "Keto", y: ketoCount },
               { x: "Paleo", y: paleoCount },
-              { x: "Vegan", y: veganCount }
+              { x: "Vegan", y: veganCount },
             ]}
           />
         </div>
@@ -168,7 +168,7 @@ class Admin extends React.Component {
           style={{
             marginTop: "1rem",
             backgroundColor: "#eaebf1",
-            display: "flex"
+            display: "flex",
           }}
           onClick={() => this.setState({ isAddMenuClicked: true })}
         >
@@ -181,7 +181,7 @@ class Admin extends React.Component {
           style={{
             marginTop: "1rem",
             backgroundColor: "#eaebf1",
-            display: "flex"
+            display: "flex",
           }}
         >
           <Link
@@ -189,7 +189,7 @@ class Admin extends React.Component {
             color="default"
             to={{
               pathname: "/admin/menuitems",
-              state: { menu: this.state.menuItems }
+              state: { menu: this.state.menuItems },
             }}
           >
             View Menu
@@ -204,7 +204,7 @@ class Admin extends React.Component {
           style={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "center"
+            justifyContent: "center",
           }}
           // adder={props.appProps.adder}
         >
@@ -218,7 +218,7 @@ class Admin extends React.Component {
               {
                 display: "flex",
                 justifyContent: "space-evenly",
-                overflow: "auto"
+                overflow: "auto",
               })
             }
           >
@@ -234,7 +234,7 @@ class Admin extends React.Component {
                       style={{
                         display: "flex",
                         alignItems: "center",
-                        overflow: "auto"
+                        overflow: "auto",
                       }}
                     >
                       <AdminMenuItem
@@ -257,7 +257,7 @@ class Admin extends React.Component {
                       style={{
                         display: "flex",
                         alignItems: "center",
-                        overflow: "auto"
+                        overflow: "auto",
                       }}
                     >
                       <AdminMenuItem
@@ -267,7 +267,7 @@ class Admin extends React.Component {
                         classes={classes}
                         appProps={{
                           props: this.props,
-                          menu: this.state.menuItems
+                          menu: this.state.menuItems,
                         }}
                         deleteMenuItem={this.deleteMenuItem}
                         updateMenuItem={this.updateMenuItem}
@@ -308,6 +308,7 @@ class Admin extends React.Component {
                     <TableCell>Customer Name</TableCell>
 
                     <TableCell align="right">Order_Id</TableCell>
+                    <TableCell align="right">Items Ordered</TableCell>
                     <TableCell align="right">Items Ordered</TableCell>
 
                     <TableCell align="right">Price</TableCell>

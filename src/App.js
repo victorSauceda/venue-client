@@ -12,7 +12,6 @@ import Login from "./containers/Login";
 import Sandbox from "./containers/Sandbox";
 import Admin from "./containers/Admin";
 import AdminOrderDetails from "./containers/AdminOrderDetails";
-
 import StripeContainer from "./containers/StripeContainer";
 import updateMenuItem from "./containers/updateMenuItem";
 import { API } from "aws-amplify";
@@ -163,6 +162,7 @@ class App extends Component {
       foodobj.orderDescription = description;
       cartItems.push(foodobj);
       // console.log(cartItems);
+      console.log("the real cart items", cartItems);
       return { cartItems: cartItems };
     });
   }
