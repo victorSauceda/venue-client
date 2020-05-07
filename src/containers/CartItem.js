@@ -29,7 +29,6 @@ class CartItem extends React.Component {
               height: "10rem",
               width: "12rem",
               display: "block",
-              margin: "0 auto",
             }}
             height="42"
             width="442"

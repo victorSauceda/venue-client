@@ -52,7 +52,7 @@ export default function Cart(props) {
     setOpen(false);
   };
   return (
-    <div>
+    <div style={{ maxWidth: "fit-content", margin: "0 auto" }}>
       <h2>My Cart</h2>
       {props.appProps.cartItems.length > 0 ? (
         <div>
