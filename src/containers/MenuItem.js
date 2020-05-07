@@ -40,7 +40,7 @@ function MenuItemComp(props) {
   const { item, classes } = props;
   return (
     <>
-      <Card style={{ marginBottom: "20px" }}>
+      <Card style={{ marginBottom: "20px", width: "30rem" }}>
         <div style={{ textAlign: "center" }}>
           <h3
             style={{
@@ -57,8 +57,9 @@ function MenuItemComp(props) {
             style={{
               textAlign: "center",
               width: "25rem",
-              height: "auto",
+
               minHeight: "20rem",
+              height: "15rem",
               objectFit: "cover",
             }}
           />

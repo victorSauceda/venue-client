@@ -103,7 +103,7 @@ class Home extends React.Component {
                     key={key}
                     item
                     xs={12}
-                    sm={6}
+                    sm={3}
                     style={{
                       display: "flex",
                       alignItems: "space-evenly",
@@ -125,7 +125,7 @@ class Home extends React.Component {
                     key={key}
                     item
                     xs={12}
-                    sm={6}
+                    sm={3}
                     style={{
                       display: "flex",
                       alignItems: "space-evenly",
