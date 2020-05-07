@@ -4,7 +4,7 @@ import { VictoryPie } from "victory";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import AdminOrders from "./AdminOrders";
-import { API } from "aws-amplify";
+
 import {
   TableContainer,
   TableHead,
@@ -13,26 +13,9 @@ import {
   Paper,
   TableCell,
   TableRow,
-  Grid,
   Modal,
 } from "@material-ui/core";
 import AdminMenuInput from "./AdminMenuInput";
-import AdminMenuItem from "./AdminMenuItem";
-import Search from "./Search";
-const getModalStyle = () => {
-  const top = 50 + rand();
-  const left = 50 + rand();
-
-  return {
-    top: "50%",
-    left: "50%",
-    transform: `translate(10%, 10%)`,
-    maxWidth: "100%",
-  };
-};
-const rand = () => {
-  return Math.round(Math.random() * 20) - 10;
-};
 const classes = {
   icon: {
     // marginRight: theme.spacing(2)
@@ -69,13 +52,13 @@ const classes = {
     marginBottom: "20px !important",
   },
 };
+
 class Admin extends React.Component {
   constructor(props) {
-    console.log("child props at admin: ", props);
     super(props);
     this.state = {
       // transactions: this.props.appProps.transactions,
-      cartItems: [],
+      cartItems: props.cartItems,
       isClicked: false,
       isAddMenuClicked: false,
       // menuItems: this.props.appProps.menuItems,
@@ -86,37 +69,16 @@ class Admin extends React.Component {
     };
   }
 
-  deleteMenuItem = async (id) => {
-    await API.del("vic", `/admin/menuitems/${id}`);
-    // await this.getMenuItem();
-  };
-  updateMenuItem = async (id) => {
-    await API.put("vic", `/admin/menuitems/${id}`);
-    // await this.getMenuItem();
-  };
-  handleKetoActive = () => {
-    this.setState({ keto: !this.state.keto });
-  };
-
-  handlePaleoActive = () => {
-    this.setState({ paleo: !this.state.paleo });
-  };
-
   render() {
     let filteredArray = [];
     this.props.appProps.menuItems.forEach((item, idx) => {
-      // console.log("item in admin foreach: ", item);
       filteredArray.push(item);
-      // console.log("filtered array: ", filteredArray);
-      // item.cartItems.forEach(element => {
-      //  filteredArray.push(element);
-      // });
     });
 
     let veganCount = 0;
     let ketoCount = 0;
     let paleoCount = 0;
-    filteredArray.map((item) => {
+    filteredArray.forEach((item) => {
       if (item.dietType === "vegan") {
         veganCount++;
       }
@@ -127,11 +89,6 @@ class Admin extends React.Component {
         paleoCount++;
       }
     });
-    // console.log("vegan count:", veganCount);
-    // console.log("keto count:", ketoCount);
-    // console.log("paleo count:", paleoCount);
-    console.log("transactions at admin", this.state.transactions);
-    console.log("menu items at admin", this.state.menuItems);
 
     return (
       <div>
@@ -145,14 +102,7 @@ class Admin extends React.Component {
             ]}
           />
         </div>
-        <div>
-          <Search
-            ketoActive={this.state.keto}
-            paleoActive={this.state.paleo}
-            handleKeto={this.handleKetoActive}
-            handlePaleo={this.handlePaleoActive}
-          />
-        </div>
+
         <Button
           variant="contained"
           fullWidth
@@ -188,15 +138,15 @@ class Admin extends React.Component {
             onClick={() => this.setState({ isMenuClicked: true })}
             color="default"
             to={{
-              pathname: "/admin/menuitems",
-              state: { menu: this.state.menuItems },
+              pathname: "/admin/menuitems/view",
+              // state: { menu: this.state.menuItems },
             }}
           >
             View Menu
           </Link>
         </Button>
 
-        <Modal
+        {/* <Modal
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
           open={this.state.isMenuClicked}
@@ -207,78 +157,9 @@ class Admin extends React.Component {
             justifyContent: "center",
           }}
           // adder={props.appProps.adder}
-        >
-          <Grid
-            className={classes.paper}
-            container
-            direction="row"
-            spacing={3}
-            style={
-              (getModalStyle(),
-              {
-                display: "flex",
-                justifyContent: "space-evenly",
-                overflow: "auto",
-              })
-            }
-          >
-            {this.props.appProps.menuItems.map((item, key) => {
-              return (
-                <>
-                  {item.dietType === "keto" && this.state.keto === true ? (
-                    <Grid
-                      key={key + "grid"}
-                      item
-                      xs={12}
-                      sm={3}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        overflow: "auto",
-                      }}
-                    >
-                      <AdminMenuItem
-                        key={key + "menu Items"}
-                        item={item}
-                        addToCart={this.props.addToCart}
-                        classes={classes}
-                        appProps={{ ...this.props }}
-                        deleteMenuItem={this.deleteMenuItem}
-                        updateMenuItem={this.updateMenuItem}
-                      />
-                    </Grid>
-                  ) : null}
-                  {item.dietType === "paleo" && this.state.paleo === true ? (
-                    <Grid
-                      item
-                      key={key}
-                      xs={12}
-                      sm={3}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        overflow: "auto",
-                      }}
-                    >
-                      <AdminMenuItem
-                        item={item}
-                        key={key}
-                        addToCart={this.props.addToCart}
-                        classes={classes}
-                        appProps={{
-                          props: this.props,
-                          menu: this.state.menuItems,
-                        }}
-                        deleteMenuItem={this.deleteMenuItem}
-                        updateMenuItem={this.updateMenuItem}
-                      />
-                    </Grid>
-                  ) : null}
-                </>
-              );
-            })}
-          </Grid>
-        </Modal>
+        > */}
+
+        {/* </Modal> */}
 
         <Modal
           aria-labelledby="simple-modal-title"
@@ -288,8 +169,23 @@ class Admin extends React.Component {
 
           // adder={props.appProps.adder}
         >
-          <div style={getModalStyle()} className={classes.paper}>
-            <AdminMenuInput />
+          <div
+            className={classes.paper}
+            style={{
+              backgroundColor: "white",
+              margin: "0 auto",
+              width: "80%",
+              height: "auto",
+              position: "relative",
+              top: "50%",
+              transform: "translateY(-50%)",
+              padding: "3rem",
+              borderColor: "white !important",
+            }}
+          >
+            <AdminMenuInput
+              onClose={() => this.setState({ isAddMenuClicked: false })}
+            />
             {/* <SimpleModal /> */}
           </div>
         </Modal>
@@ -300,23 +196,49 @@ class Admin extends React.Component {
           onClose={() => this.setState({ openViewOrders: false })}
           // adder={props.appProps.adder}
         >
-          <div style={getModalStyle()} className={classes.paper}>
+          <div
+            className={classes.paper}
+            style={{
+              backgroundColor: "white",
+              margin: "0 auto",
+              width: "80%",
+              height: "auto",
+              position: "relative",
+              top: "50%",
+              transform: "translateY(-50%)",
+              padding: "3rem",
+              borderColor: "white !important",
+            }}
+          >
             <TableContainer component={Paper}>
               <Table className={classes.table} aria-label="simple table">
                 <TableHead>
                   <TableRow>
                     <TableCell>Customer Name</TableCell>
 
-                    <TableCell align="right">Order_Id</TableCell>
-                    <TableCell align="right">Items Ordered</TableCell>
-                    <TableCell align="right">Items Ordered</TableCell>
+                    <TableCell align="center">Order_Id</TableCell>
+                    {/* <TableCell align="center">Items Ordered</TableCell> */}
+                    <TableCell align="center">Items Ordered</TableCell>
 
                     <TableCell align="right">Price</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {this.props.appProps.transactions.map((transaction, idx) => {
-                    return <AdminOrders transaction={transaction} />;
+                    let totalPrice = transaction.cartItems.reduce(
+                      (accumulator, currentValue) =>
+                        accumulator + currentValue.price * currentValue.qty,
+
+                      0
+                      // ('currentValue.price: ', currentValue.price);
+                    );
+
+                    return (
+                      <AdminOrders
+                        transaction={transaction}
+                        totalPrice={totalPrice}
+                      />
+                    );
                   })}
                 </TableBody>
               </Table>

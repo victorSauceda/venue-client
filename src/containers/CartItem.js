@@ -2,82 +2,34 @@ import React from "react";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import Button from "@material-ui/core/Button";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import RemoveIcon from "@material-ui/icons/Remove";
 
-const classes = {
-  icon: {
-    // marginRight: theme.spacing(2)
-  },
-  heroContent: {
-    // backgroundColor: theme.palette.background.paper
-    // padding: theme.spacing(8, 0, 6)
-  },
-  heroButtons: {
-    // marginTop: theme.spacing(4)
-  },
-  cardGrid: {
-    // paddingTop: theme.spacing(8),
-    // paddingBottom: theme.spacing(8)
-  },
-  card: {
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-    marginBottom: "20px !important"
-  },
-  cardMedia: {
-    paddingTop: "56.25%" // 16:9
-  },
-  cardContent: {
-    flexGrow: 1
-  },
-  textAlignMe: {
-    textAlign: "center"
-  },
-  footer: {
-    // backgroundColor: theme.palette.background.paper,
-    // padding: theme.spacing(6)
-  }
-};
 class CartItem extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   handleChangeAdd = (item, qty) => {
-    // console.log("handleChange add: ", item);
-    // console.log("item qty", qty);
-
     this.props.updateCartItem(item, qty);
   };
 
   handleChangeMinus = (item, qty) => {
-    // console.log("handleChange minus: ", item);
-    // console.log("item qty", qty);
     // Add in separate picee of logic, so if that if it goes to 0 - run remove item function
     this.props.updateCartItem(item, qty);
   };
   render() {
     const { item } = this.props;
-    // console.log("Cart Item: ", item);
-    // console.log(this.props);
+
     let lessThan = this.props.item.qty - 1;
     let moreThan = this.props.item.qty + 1;
     return (
       <TableRow key={item.name}>
-        <TableCell component="th" scope="row">
+        <TableCell align="left">
           <img
-            src={item.img}
+            src={`https://venueappimages.s3.us-west-2.amazonaws.com/private/us-west-2%3A47c95c2c-3e37-4645-a66c-c4b49a51347c/${item.imgSrc}`}
             alt={item.alt}
             style={{
               height: "10rem",
               width: "12rem",
               display: "block",
-              margin: "0 auto"
+              margin: "0 auto",
             }}
             height="42"
             width="442"
@@ -88,7 +40,7 @@ class CartItem extends React.Component {
           <div
             style={{
               justifyContent: "space-around",
-              display: "flex"
+              display: "flex",
             }}
           >
             <RemoveIcon
@@ -101,7 +53,7 @@ class CartItem extends React.Component {
               style={{
                 marginLeft: "-23px",
                 marginRight: "-22px",
-                marginTop: "4px"
+                marginTop: "4px",
               }}
             >
               {item.qty}
@@ -113,8 +65,6 @@ class CartItem extends React.Component {
             ></AddCircleOutlineIcon>
           </div>
         </TableCell>
-        <TableCell align="right">{item.distance}</TableCell>
-        <TableCell align="right">{item.calories}</TableCell>
         <TableCell align="right">{item.dietType}</TableCell>
         <TableCell align="right">{item.price}</TableCell>
         <TableCell align="right">

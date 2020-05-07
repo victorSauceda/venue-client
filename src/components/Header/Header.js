@@ -42,7 +42,7 @@ const Header = (props) => {
       setIsAuthenticated(true);
     } catch (e) {
       if (e !== "NO current user") {
-        console.log(e);
+        console.error(e);
       }
     }
     setIsAuthenticating(false);
@@ -53,8 +53,6 @@ const Header = (props) => {
     // return <Redirect to="/login" />;
     history.push("/login");
   }
-
-  console.log("propsat header: ", props);
 
   return (
     !isAuthenticating && (

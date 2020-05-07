@@ -26,7 +26,7 @@
 //   let reverse = "";
 //   for (let i = x.length - 1; i > 0; i--) {
 //     reverse += x.charAt(i);
-//     console.log(reverse);
+//     (reverse);
 //     if (x == +reverse) {
 //       return true;
 //     }
@@ -34,7 +34,7 @@
 
 //   return false;
 // };
-// console.log(isPalindrome(121));
+// (isPalindrome(121));
 
 // You are in charge of a display advertising program. Your ads are displayed on websites all over the internet. You have some CSV input data that counts how many times that users have clicked on an ad on each individual domain. Every line consists of a click count and a domain name, like this:
 // counts = [ "900,google.com",
@@ -82,12 +82,11 @@ const counts = [
   "2,en.wikipedia.org",
   "1,m.wikipedia.org",
   "1,mobile.sports",
-  "1,google.co.uk"
+  "1,google.co.uk",
 ];
 function domains(arr) {
   for (let index = 0; index < arr.length; index++) {
     let split = arr[i].split(",");
-    console.log(split);
   }
 }
 domains(counts);

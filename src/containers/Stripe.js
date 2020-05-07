@@ -1,29 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { CardElement, injectStripe } from "react-stripe-elements";
-import {
-  FormControl,
-  InputLabel,
-  Input,
-  TextField,
-  Button
-} from "@material-ui/core";
+import { TextField, Button } from "@material-ui/core";
 import { API } from "aws-amplify";
-import { useFormFields } from "../libs/hooksLib";
 import { uuid } from "uuidv4";
+import UIfx from "uifx";
 
 // material ui and get some forms
 function Stripe(props) {
   const [isCardComplete, setIsCardComplete] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
+  // const [isProcessing, setIsProcessing] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [street, setStreet] = useState("");
-  const [card, setCard] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const { appProps } = props;
-  // console.log(appProps);
 
-  const handleChange = async event => {
+  // const [isLoading, setIsLoading] = useState(false);
+  const { appProps } = props;
+
+  const handleChange = async (event) => {
     switch (event.target.id) {
       case "name":
         setName(event.target.value);
@@ -34,40 +27,22 @@ function Stripe(props) {
       case "email":
         setEmail(event.target.value);
         break;
-      case "card":
-        setCard(event.target.value);
-        break;
+      default:
+        console.error("invalid value");
     }
   };
 
   async function handleSubmit(event) {
-    setIsLoading(true);
+    // setIsLoading(true);
 
     try {
-      // console.log(" handle submit clear new", props);
       event.preventDefault();
-      setIsProcessing(true);
-      const { token, error } = await props.stripe.createToken({
-        name: name
-      });
-      setIsProcessing(false);
-      localStorage.setItem("travic", transactionResponseBody);
+      // setIsProcessing(true);     //not sure if using
 
-      let billingBody = {
+      //there was an error argument after {token, error} took it out because it was not being used
+      const { token } = await props.stripe.createToken({
         name: name,
-        email: email,
-        street: street,
-        source: token.id,
-        amount: appProps.appProps.adder
-      };
-      let response = await API.post(
-        "vic",
-        "/billing",
-        {
-          body: billingBody
-        }
-        // console.log("went through response", response)
-      );
+      });
       let transactionResponseBody = {
         restaurantId: uuid(),
         orderId: uuid(),
@@ -76,15 +51,28 @@ function Stripe(props) {
         customerName: name,
         salesTax: "0.3%",
         total: appProps.adder,
-        cartItems: appProps.cartItems
+        cartItems: appProps.appProps.cartItems,
       };
-      // console.log(transactionResponseBody);
-      let transactionResponse = await API.post("vic", "/transaction", {
-        body: transactionResponseBody
+      // setIsProcessing(false);
+      localStorage.setItem("travic", transactionResponseBody);
+
+      let billingBody = {
+        name: name,
+        email: email,
+        street: street,
+        source: token.id,
+        amount: appProps.appProps.adder,
+      };
+      await API.post("vic", "/billing", {
+        body: billingBody,
       });
-      // console.log("transaction: ", transactionResponse);
+
+      await API.post("vic", "/transaction", {
+        body: transactionResponseBody,
+      });
+      props.onClose();
     } catch (e) {
-      // console.log(e);
+      console.error(e);
     }
   }
 
@@ -104,7 +92,7 @@ function Stripe(props) {
 
         <TextField
           id="street"
-          label="Street"
+          label="Address"
           value={street}
           onChange={handleChange}
           variant="outlined"
@@ -123,7 +111,7 @@ function Stripe(props) {
           autoComplete="current-password"
           onChange={handleChange}
         />
-        <TextField
+        {/* <TextField
           variant="outlined"
           margin="normal"
           required
@@ -133,21 +121,24 @@ function Stripe(props) {
           id="email"
           autoComplete="current-password"
           onChange={handleChange}
-        />
-
-        <CardElement
-          id="card"
-          className="card-field"
-          name="card"
-          onChange={e => {
-            setIsCardComplete(e.complete);
-            console.log(e);
-          }}
-          style={{
-            base: { fontSize: "18px", fontFamily: '"Open Sans", sans-serif' }
-          }}
-        />
-
+          style={{ marginBottom: "2rem" }}
+        /> */}
+        <div style={{ marginBottom: "2rem" }}>
+          <CardElement
+            id="card"
+            className="card-field"
+            name="card"
+            onChange={(e) => {
+              setIsCardComplete(e.complete);
+            }}
+            style={{
+              base: {
+                fontSize: "18px",
+                fontFamily: '"Open Sans", sans-serif',
+              },
+            }}
+          />
+        </div>
         <Button type="submit" fullWidth variant="contained" color="primary">
           Submit
         </Button>

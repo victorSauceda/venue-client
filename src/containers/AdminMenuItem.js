@@ -1,67 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Button from "@material-ui/core/Button";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import { Link } from "react-router-dom";
 
-// import sanityClient from "./client";
-// import imageUrlBuilder from "@sanity/image-url";
-// import myConfigSanityClient from "./client";
-// const builder = imageUrlBuilder(myConfigSanityClient);
-
 function AdminMenuItem(props) {
-  const [quantity, setQuantity] = useState(1);
-  const [menuItems, setMenuItems] = useState([]);
-  const handleChangeAdd = async event => {
-    setQuantity(quantity + 1);
-  };
-
-  const handleChangeMinus = async event => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
-    }
-  };
-  // useEffect(() => {
-  //   onLoad();
-  // }, []);
-  // async function onLoad() {
-  //   try {
-  //     const menuitem = await sanityClient.fetch(`
-  //       *[_type == 'menuitems']{
-  //         name, slug, image, description, diettype, price}`);
-  //     console.log("testing: ", menuitem);
-  //     this.setState = { menuItem: menuitem };
-  //   } catch (e) {
-  //     if (e !== "No current user") {
-  //       alert(e);
-  //     }
-  //   }
-  //   // setIsLoading(false);
-  // }
-
-  // useEffect(() => {
-  //   onLoad();
-  // }, [menuItems]);
-
-  const { item, classes } = props;
-
-  // function onLoad() {
-  //   setMenuItems(appProps.appProps.menuItems);
-  // }
-  // console.log("admin menu item props: ", menuItems);
-  // // console.log("menu at menu admin: ", props.location.state);
-  // // console.log("props at admin menu: ", appProps.props.location.state.notes);
-  // // console.log("item at admin menu: ", item);
-  // if (menuItems) {
-  //   const currItem = appProps.appProps.menuItems.filter(note => {
-  //     // console.log("note inside of admin menu filter: ", note);
-  //     // console.log("item inside of admin menu filter: ", item);
-  //     return (note._id = item._id);
-  //   });
-  // }
-
-  // console.log("currItem at admin menu: ", currItem);
+  const { item } = props;
 
   return (
     <Card style={{ marginBottom: "20px" }}>
@@ -69,19 +14,19 @@ function AdminMenuItem(props) {
         <h3
           style={{
             marginBottom: "15px",
-            marginTop: "10px"
+            marginTop: "10px",
           }}
         >
           <em>{item.name}</em>
         </h3>
 
         <img
-          src={item.img}
+          src={`https://venueappimages.s3.us-west-2.amazonaws.com/private/us-west-2%3A47c95c2c-3e37-4645-a66c-c4b49a51347c/${item.imgSrc}`}
           alt={item.alt}
           style={{
             textAlign: "center",
             width: "80%",
-            height: "auto"
+            height: "auto",
           }}
         />
       </div>
@@ -90,7 +35,7 @@ function AdminMenuItem(props) {
         style={{
           justifyContent: "space-evenly",
           display: "flex",
-          marginTop: "20px"
+          marginTop: "20px",
         }}
       >
         <Typography>
@@ -100,7 +45,7 @@ function AdminMenuItem(props) {
           Calories:<strong>{item.calories}</strong>
         </Typography> */}
       </div>
-      <CardContent className={classes.cardContent}>
+      <CardContent>
         <Typography
           style={{ textAlign: "center" }}
           gutterBottom
@@ -119,12 +64,12 @@ function AdminMenuItem(props) {
           style={{
             justifyContent: "space-around",
             display: "flex",
-            marginTop: "30px"
+            marginTop: "30px",
           }}
         >
           <Button
             variant="contained"
-            style={{ backgroundColor: "#eaebf1" }}
+            style={{ backgroundColor: "#f44336" }}
             onClick={() => props.deleteMenuItem(item._id)}
           >
             Remove Item From Menu
@@ -136,7 +81,7 @@ function AdminMenuItem(props) {
           >
             <Link
               to={{
-                pathname: `/admin/menuitems/${item._id}/update`
+                pathname: `/admin/menuitems/${item._id}/update`,
               }}
             >
               Update Item

@@ -2,7 +2,6 @@ import React from "react";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import MenuItemComp from "./MenuItem";
 import Search from "./Search";
-import { API } from "aws-amplify";
 import AdminOrders from "./AdminOrders";
 import {
   TableContainer,
@@ -34,25 +33,18 @@ const classes = {
     textAlign: "center",
   },
 };
-const getModalStyle = () => {
-  const top = 50 + rand();
-  const left = 50 + rand();
+// const getModalStyle = () => {
+//   return {
+//     top: "50%",
+//     left: "50%",
+//     transform: `translate(10%, 10%)`,
+//     maxWidth: "80%",
+//   };
+// };
 
-  return {
-    top: "50%",
-    left: "50%",
-    transform: `translate(10%, 10%)`,
-    maxWidth: "80%",
-  };
-};
-const rand = () => {
-  return Math.round(Math.random() * 20) - 10;
-};
 class Home extends React.Component {
   constructor(props) {
     super(props);
-    // console.log("HOME PROPS");
-    // console.log(props);
 
     this.state = {
       keto: true,
@@ -62,15 +54,6 @@ class Home extends React.Component {
     };
   }
 
-  // async componentDidMount() {
-  //   try {
-  //     const responseMenu = await API.get("vic", "/menuitems");
-  //     // console.log("response", responseMenu);
-  //     this.setState({ menu: responseMenu });
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // }
   handleKetoActive = () => {
     this.setState({ keto: !this.state.keto });
   };
@@ -83,18 +66,8 @@ class Home extends React.Component {
   };
 
   render() {
-    console.log("homeProps:", this.props.appProps.transactions);
-    // console.log("menu:", this.state.menu);
     return (
-      <div
-
-      // style={{
-      //   display: "flex",
-      //   alignItems: "center",
-      //   justifyContent: "center",
-      //   flexDirection: "column"
-      // }}
-      >
+      <div>
         <span style={{ display: "flex" }}>
           <Search
             ketoActive={this.state.keto}
@@ -189,7 +162,7 @@ class Home extends React.Component {
               </TableHead>
               <TableBody>
                 {this.props.appProps.transactions.map((transaction, idx) => {
-                  return transaction.customerName == "victor sauceda" ? (
+                  return transaction.customerName === "victor sauceda" ? (
                     <AdminOrders transaction={transaction} />
                   ) : null;
                 })}
@@ -206,7 +179,17 @@ class Home extends React.Component {
           adder={this.props.appProps.adder}
         >
           <div
-            style={getModalStyle()}
+            style={{
+              backgroundColor: "white",
+              margin: "0 auto",
+              width: "80%",
+              height: "auto",
+              position: "relative",
+              top: "50%",
+              transform: "translateY(-50%)",
+              padding: "3rem",
+              borderColor: "white !important",
+            }}
             // style={{
             //   top: 50 + (Math.round(Math.random() * 20) - 10) + "%",
             //   left: 50 + (Math.round(Math.random() * 20) - 10) + "%",
@@ -221,38 +204,39 @@ class Home extends React.Component {
                   <TableRow>
                     <TableCell>Customer Name</TableCell>
 
-                    <TableCell align="right">Order_Id</TableCell>
-                    <TableCell align="right">Items Ordered</TableCell>
+                    <TableCell align="center">Order_Id</TableCell>
+                    <TableCell align="center">Items Ordered</TableCell>
 
                     <TableCell align="right">Price</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {this.props.appProps.transactions.map((transaction, idx) => {
-                    return transaction.customerName == "victor sauceda" ? (
-                      <AdminOrders transaction={transaction} />
+                    let totalPrice = transaction.cartItems.reduce(
+                      (accumulator, currentValue) =>
+                        accumulator + currentValue.price * currentValue.qty,
+
+                      0
+                    );
+
+                    console.log("totalPriceNew", totalPrice);
+
+                    return transaction.customerName === "victor sauceda" ? (
+                      <AdminOrders
+                        transaction={transaction}
+                        totalPrice={totalPrice}
+                      />
                     ) : null;
-                  })}
                   })}
                 </TableBody>
               </Table>
             </TableContainer>
-            {/* <StripeContainer appProps={this.props} /> */}
-            {/* <SimpleModal /> */}
           </div>
         </Modal>
       </div>
     );
   }
 }
-
-// <ShoppingCartIcon
-//                   style={{
-//                     position: "fixed",
-//                     bottom: "560px",
-//                     right: "1000px"
-//                   }}
-//                 />
 
 // const mapStateToProps = state => {
 //   return {

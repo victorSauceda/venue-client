@@ -9,20 +9,18 @@ import Cart from "./containers/Cart";
 import MainLayout from "./layouts/MainLayout";
 import EmptyLayout from "./layouts/EmptyLayout";
 import Login from "./containers/Login";
-import Sandbox from "./containers/Sandbox";
 import Admin from "./containers/Admin";
 import AdminOrderDetails from "./containers/AdminOrderDetails";
 import StripeContainer from "./containers/StripeContainer";
 import updateMenuItem from "./containers/updateMenuItem";
 import { API } from "aws-amplify";
 import AdminUpdateForm from "./containers/AdminUpdateForm";
-import { userParams } from "react-router";
+import AdminViewMenuPage from "./containers/AdminViewMenuPage";
 
 const NotFound = () => {
   return <div>NotFound</div>;
 };
 const RouteObject = ({ childProps }) => {
-  console.log("childprops in route", childProps);
   return (
     <Router>
       <Switch>
@@ -51,7 +49,11 @@ const RouteObject = ({ childProps }) => {
           exact
           component={Admin}
         />
-
+        <DashboardRoute
+          path={`/admin/menuitems/view`}
+          appProps={childProps}
+          component={AdminViewMenuPage}
+        />
         <DashboardRoute
           path={`/admin/menuitems/:id`}
           appProps={childProps}
@@ -89,19 +91,11 @@ const RouteObject = ({ childProps }) => {
   );
 };
 
-const DashboardRoute = ({
-  component: Component,
-  appProps: appProps,
-  ...rest
-}) => {
-  // console.log(Component);
-  // console.log("appProps", appProps);
-  // console.log("rest", rest);
+const DashboardRoute = ({ component: Component, appProps, ...rest }) => {
   return (
     <Route
       {...rest}
       render={(props) => {
-        // console.log("props f", props);
         return (
           <MainLayout appProps={appProps}>
             <Component appProps={appProps} {...props} {...rest} />
@@ -140,7 +134,6 @@ class App extends Component {
 
   async componentDidMount() {
     const response = await API.get("vic", "/transaction");
-    // console.log("Response from Mongo: ", response);
     this.setState({ transactions: response });
     this.getMenuItem();
   }
@@ -148,11 +141,8 @@ class App extends Component {
     try {
       const responseMenu = await API.get("vic", "/admin/menuitems");
 
-      // console.log("menu items api call", responseMenu);
       this.setState({ menuItems: responseMenu });
-    } catch (e) {
-      console.log("api call err for menu", e);
-    }
+    } catch (e) {}
   }
 
   addToCart(foodobj, qty, description) {
@@ -161,21 +151,16 @@ class App extends Component {
       foodobj.qty = qty;
       foodobj.orderDescription = description;
       cartItems.push(foodobj);
-      // console.log(cartItems);
-      console.log("the real cart items", cartItems);
       return { cartItems: cartItems };
     });
   }
   updateCartItem(foodobj, qty) {
-    // console.log("Food Object", foodobj);
-    // console.log("update cart item qty: ", qty);
     this.setState((prevState) => {
       const cartItems = [...prevState.cartItems];
       const itemUpdating = cartItems.find(
         (element) => foodobj.name === element.name
       );
       itemUpdating.qty = qty;
-      // console.log("Updated Cart Items: ", cartItems);
       return { cartItems: cartItems };
     });
   }
@@ -191,8 +176,6 @@ class App extends Component {
     let adder = this.state.cartItems.reduce((acc, next) => {
       return acc + next.price * next.qty;
     }, 0);
-    // console.log("adder: ", adder);
-    // console.log(this.props);
     const childProps = {
       cartItems: this.state.cartItems,
       addToCart: this.addToCart,

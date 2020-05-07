@@ -1,8 +1,5 @@
-import React, { useEffect, useState, useMemo } from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-// import Album from "Album";
-import { increment, decrement } from "../store/reducers/stepCounter";
+import React, { useState } from "react";
+
 import { useFormFields } from "../libs/hooksLib";
 import {
   Card,
@@ -14,35 +11,14 @@ import {
   CardContent,
   Button,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import RemoveIcon from "@material-ui/icons/Remove";
 import "./MenuItem.css";
-import CardMedia from "@material-ui/core/CardMedia";
-// import sanityClient from "./client";
-// import imageUrlBuilder from "@sanity/image-url";
-// import myConfigSanityClient from "./client";
-// const builder = imageUrlBuilder(myConfigSanityClient);
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
-
-function getModalStyle() {
-  const top = 50;
-  const left = 50;
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
-}
 
 function MenuItemComp(props) {
   const [quantity, setQuantity] = useState(1);
   // const [description, setDescription] = useState("");
   const [isClicked, setIsClicked] = useState(false);
-  const modalStyle = React.useMemo(getModalStyle, []);
   const [fields, handleFieldChange] = useFormFields({
     orderDescription: "",
   });
@@ -58,30 +34,10 @@ function MenuItemComp(props) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     props.addToCart(item, quantity, fields.orderDescription);
-    console.log("orderDescription: ", fields.orderDescription);
-    console.log("quantity: ", quantity);
-    console.log("item: ", item);
+    setIsClicked(false);
   };
-  // useEffect(() => {
-  //   onLoad();
-  // }, []);
-  // async function onLoad() {
-  //   try {
-  //     const menuitem = await sanityClient.fetch(`
-  //       *[_type == 'menuitems']{
-  //         name, slug, image, description, diettype, price}`);
-  //     console.log("testing: ", menuitem);
-  //     this.setState = { menuItem: menuitem };
-  //   } catch (e) {
-  //     if (e !== "No current user") {
-  //       alert(e);
-  //     }
-  //   }
-  //   // setIsLoading(false);
-  // }
 
   const { item, classes } = props;
-  console.log("props to see if appprops: ", props);
   return (
     <>
       <Card style={{ marginBottom: "20px" }}>
@@ -96,7 +52,7 @@ function MenuItemComp(props) {
           </h3>
 
           <img
-            src={item.img}
+            src={`https://venueappimages.s3.us-west-2.amazonaws.com/private/us-west-2%3A47c95c2c-3e37-4645-a66c-c4b49a51347c/${item.imgSrc}`}
             alt={item.alt}
             style={{
               textAlign: "center",
@@ -180,20 +136,31 @@ function MenuItemComp(props) {
         adder={props.appProps.adder}
       >
         <div
-          style={{ top: "70%", left: "70%", transform: `translate(20%, 20%)` }}
+          style={{
+            backgroundColor: "white",
+            margin: "0 auto",
+            width: "80%",
+            height: "auto",
+            position: "relative",
+            top: "50%",
+            transform: "translateY(-50%)",
+            padding: "3rem",
+            borderColor: "white !important",
+          }}
         >
           <form
             //   className="feedback-form"
             style={{
               display: "flex",
               flexDirection: "column",
-              backgroundColor: "white",
+              backgroundColor: "#fafafa",
               padding: "20px",
             }}
             onSubmit={handleSubmit}
           >
+            <h2>Customize Your Order</h2>
             <FormControl controlId="orderDescription">
-              <InputLabel>Customize Order</InputLabel>
+              <InputLabel>Enter Changes</InputLabel>
               <Input
                 type="text"
                 placeholder="Customize Order"
@@ -201,13 +168,17 @@ function MenuItemComp(props) {
                 id="orderDescription"
                 // required
               />
-              {console.log("fields: ", fields)}
             </FormControl>
-            <Button type="submit" block>
+            <Button
+              style={{ marginTop: "1rem" }}
+              type="submit"
+              variant="contained"
+              color="primary"
+              block
+            >
               Continue
             </Button>
           </form>
-          {/* <SimpleModal /> */}
         </div>
       </Modal>
     </>

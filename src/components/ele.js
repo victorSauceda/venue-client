@@ -13,7 +13,6 @@
 //   }
 //   return counter;
 // }
-// console.log(ele("1u2u3d4u5d6u7d"));
 
 function spiralCopy(arr) {
   let hor = arr[0].length;
@@ -54,11 +53,3 @@ function spiralCopy(arr) {
   }
   return newArr;
 }
-// console.log(
-//   spiralCopy([
-//     [1, 2, 3, 4, 5],
-//     [6, 7, 8, 9, 10],
-//     [11, 12, 13, 14, 15],
-//     [16, 17, 18, 19, 20]
-//   ])
-// );

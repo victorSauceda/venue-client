@@ -27,25 +27,24 @@ const classes = {
     display: "flex",
     flexDirection: "column",
     marginBottom: "20px !important",
-    width: "35% !important "
+    width: "35% !important ",
   },
   cardMedia: {
-    paddingTop: "56.25%" // 16:9
+    paddingTop: "56.25%", // 16:9
   },
   cardContent: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   textAlignMe: {
-    textAlign: "center"
+    textAlign: "center",
   },
   footer: {
     // backgroundColor: theme.palette.background.paper,
     // padding: theme.spacing(6)
-  }
+  },
 };
 function TableForOrders(props) {
   const { item } = props;
-  // console.log("cartItems:", item);
 
   return (
     <>

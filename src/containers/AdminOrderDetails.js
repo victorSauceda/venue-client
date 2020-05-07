@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from "react";
-
 import TableCell from "@material-ui/core/TableCell";
-
 import TableRow from "@material-ui/core/TableRow";
-import Button from "@material-ui/core/Button";
-import Link from "@material-ui/core/Link";
-
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
+import { Link } from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
-import transitions from "@material-ui/core/styles/transitions";
-// import TableForOrders from "./TableForOrders";
 
 const classes = {
   icon: {
@@ -52,45 +46,44 @@ const classes = {
 };
 
 function AdminOrderDetails(props) {
-  console.log("admin order props: ", props.location.state);
-
-  // console.log("transaction: ", transaction);
+  console.log("admin order props: ", props.location.state.transaction);
   const [user, setUser] = useState({
     // name: ""
   });
 
   useEffect(() => {
     const rememberMe = localStorage.getItem("travic");
-    // console.log("remember me", rememberMe);
+
     setUser(rememberMe[0]);
   }, []);
-  // console.log("we are looking at the user", user);
 
   return (
     <div>
-      <TableContainer component={Paper}>
+      <Link to="/">Back to Home</Link>
+      <TableContainer style={{ marginTop: "2rem" }} component={Paper}>
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell>Name</TableCell>
-              <TableCell align="right">Order Details</TableCell>
-              <TableCell align="right">Qty</TableCell>
-
-              <TableCell align="right">Price</TableCell>
+              <TableCell align="center">Order Details</TableCell>
+              <TableCell align="left">Qty</TableCell>
+              <TableCell align="left">Price</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.appProps.cartItems.map((item, key) => {
-              console.log("item: ", item);
+            {/* taking out transactions of props.appProps.transactions.cartItems */}
+            {props.location.state.transaction.cartItems.map((item, key) => {
               return (
                 <>
                   <TableRow key={item.name}>
                     <TableCell component="th" scope="row">
                       {item.name}
                     </TableCell>
-                    <TableCell align="right">{item.orderDetails}</TableCell>
-                    <TableCell align="right">{item.qty}</TableCell>
-                    <TableCell align="right">{item.price}</TableCell>
+                    <TableCell align="center">
+                      {item.orderDescription}
+                    </TableCell>
+                    <TableCell align="left">{item.qty}</TableCell>
+                    <TableCell align="left">{item.price}</TableCell>
                   </TableRow>
                 </>
               );

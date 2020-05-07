@@ -8,7 +8,7 @@ import store from "./store";
 
 Amplify.configure({
   Auth: {
-    // mandatorySignIn: true,
+    mandatorySignIn: true,
     region: "us-west-2",
     userPoolId: "us-west-2_EGFH684Go",
     identityPoolId: "us-west-2:77652e92-bc52-4388-9937-e0eabe5e44b2",

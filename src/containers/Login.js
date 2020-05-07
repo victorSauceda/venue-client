@@ -8,7 +8,6 @@ import "./Login.css";
 import useIsAuthenticated from "../containers/AuthHook";
 
 export default function Login(props) {
-  // console.log("login props: ", props);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { isAutheticated, setIsAuthenticated } = useIsAuthenticated();
@@ -37,14 +36,14 @@ export default function Login(props) {
             autoFocus
             type="email"
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </FormControl>
         <FormControl controlId="password">
           <InputLabel>Password</InputLabel>
           <Input
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             type="password"
           />
         </FormControl>
