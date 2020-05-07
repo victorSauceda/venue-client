@@ -4,7 +4,8 @@ import { TextField, Button } from "@material-ui/core";
 import { API } from "aws-amplify";
 import { uuid } from "uuidv4";
 import UIfx from "uifx";
-
+import CashSound from "./cashsound.mp3";
+const cashMoney = new UIfx(CashSound);
 // material ui and get some forms
 function Stripe(props) {
   const [isCardComplete, setIsCardComplete] = useState(false);
@@ -70,6 +71,7 @@ function Stripe(props) {
       await API.post("vic", "/transaction", {
         body: transactionResponseBody,
       });
+      cashMoney.play();
       props.onClose();
     } catch (e) {
       console.error(e);
