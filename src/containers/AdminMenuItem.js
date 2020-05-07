@@ -25,8 +25,9 @@ function AdminMenuItem(props) {
           alt={item.alt}
           style={{
             textAlign: "center",
-            width: "80%",
-            height: "auto",
+            width: "25rem",
+            height: "15rem",
+            objectFit: "cover",
           }}
         />
       </div>

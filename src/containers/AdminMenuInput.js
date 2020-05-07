@@ -3,10 +3,12 @@ import FormControl from "@material-ui/core/FormControl";
 import Button from "@material-ui/core/Button";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
+import IconButton from "@material-ui/core/IconButton";
 
 import { s3Upload } from "../libs/awsLibs";
 import config from "../config";
 import React, { useState } from "react";
+import PhotoCamera from "@material-ui/icons/PhotoCamera";
 
 const AdminMenuInput = (props) => {
   const [name, setName] = useState("");
@@ -156,17 +158,6 @@ const AdminMenuInput = (props) => {
             variant="outlined"
           />
         </FormControl>
-        <FormControl controlId="file" style={{ marginBottom: "1rem" }}>
-          <InputLabel>Attachment</InputLabel>
-          <Input
-            type="file"
-            placeholder="please attach an image"
-            name="imgSrc"
-            onChange={handleFileChange}
-            //   required
-            // value={imgSrc}
-          />
-        </FormControl>
 
         <FormControl
           controlId="exampleForm.ControlInput1"
@@ -195,6 +186,28 @@ const AdminMenuInput = (props) => {
             //   required
             value={price}
           />
+        </FormControl>
+        <FormControl controlId="file" style={{ marginBottom: "1rem" }}>
+          {/* <InputLabel>Choose Attachment</InputLabel> */}
+          <Input
+            style={{ display: "none" }}
+            type="file"
+            onChange={handleFileChange}
+            accept="image/*"
+            id="input1"
+            //   required
+            // value={imgSrc}
+          />
+          <label htmlFor="input1">
+            <IconButton
+              style={{ backgroundColor: "transparent" }}
+              color="primary"
+              component="span"
+            >
+              <PhotoCamera />
+              <p style={{ marginLeft: "2rem" }}>Choose Image</p>
+            </IconButton>
+          </label>
         </FormControl>
         <Button
           type="text"
