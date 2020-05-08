@@ -7,7 +7,6 @@ import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 
 function Orders(props) {
-  console.log("home pade this is it: ", props);
   const { transaction } = props;
 
   return (

@@ -220,7 +220,6 @@ class Home extends React.Component {
                       0
                     );
 
-                    console.log("totalPriceNew", totalPrice);
 
                     return transaction.customerName === "victor sauceda" ? (
                       <Orders
