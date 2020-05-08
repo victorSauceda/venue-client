@@ -16,6 +16,8 @@ import updateMenuItem from "./containers/updateMenuItem";
 import { API } from "aws-amplify";
 import AdminUpdateForm from "./containers/AdminUpdateForm";
 import AdminViewMenuPage from "./containers/AdminViewMenuPage";
+import OrderDetails from "./containers/OrderDetails";
+import Orders from "./containers/Orders";
 
 const NotFound = () => {
   return <div>NotFound</div>;
@@ -27,6 +29,11 @@ const RouteObject = ({ childProps }) => {
         <DashboardRoute path="/dashboard" component={Home} />
         <DashboardRoute path="/theme" component={Theme} appProps={childProps} />
         <DashboardRoute exact path="/" component={Home} appProps={childProps} />
+        <DashboardRoute
+          path={`/myorders/:id`}
+          appProps={childProps}
+          component={OrderDetails}
+        />
         <DashboardRoute
           exact
           path="/admin"

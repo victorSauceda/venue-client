@@ -45,7 +45,7 @@ const classes = {
   },
 };
 
-function AdminOrderDetails(props) {
+function OrderDetails(props) {
   console.log("admin order props: ", props.location.state.transaction);
   const [user, setUser] = useState({
     // name: ""
@@ -59,10 +59,7 @@ function AdminOrderDetails(props) {
 
   return (
     <div>
-      <Link to="/admin">Back to Admin Dash Board</Link>
-      <h1 style={{ marginBottom: "2rem", textAlign: "center" }}>
-        Order Details
-      </h1>
+      <Link to="/">Back Home</Link>
       <TableContainer style={{ marginTop: "2rem" }} component={Paper}>
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
@@ -97,4 +94,4 @@ function AdminOrderDetails(props) {
     </div>
   );
 }
-export default AdminOrderDetails;
+export default OrderDetails;

@@ -15,6 +15,7 @@ import {
   Button,
   Modal,
 } from "@material-ui/core";
+import Orders from "./Orders";
 
 const classes = {
   card: {
@@ -163,7 +164,7 @@ class Home extends React.Component {
               <TableBody>
                 {this.props.appProps.transactions.map((transaction, idx) => {
                   return transaction.customerName === "victor sauceda" ? (
-                    <AdminOrders transaction={transaction} />
+                    <Orders transaction={transaction} />
                   ) : null;
                 })}
                 })}
@@ -222,7 +223,7 @@ class Home extends React.Component {
                     console.log("totalPriceNew", totalPrice);
 
                     return transaction.customerName === "victor sauceda" ? (
-                      <AdminOrders
+                      <Orders
                         transaction={transaction}
                         totalPrice={totalPrice}
                       />

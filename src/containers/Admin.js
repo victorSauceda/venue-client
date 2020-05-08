@@ -210,6 +210,9 @@ class Admin extends React.Component {
               borderColor: "white !important",
             }}
           >
+            <h1 style={{ textAlign: "center", marginBottom: "2rem" }}>
+              All Orders
+            </h1>
             <TableContainer component={Paper}>
               <Table className={classes.table} aria-label="simple table">
                 <TableHead>

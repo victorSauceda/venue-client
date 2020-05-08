@@ -6,8 +6,8 @@ import TableRow from "@material-ui/core/TableRow";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 
-function AdminOrders(props) {
-  console.log("admin order props: ", props);
+function Orders(props) {
+  console.log("home pade this is it: ", props);
   const { transaction } = props;
 
   return (
@@ -23,7 +23,7 @@ function AdminOrders(props) {
             {" "}
             <Link
               to={{
-                pathname: `/admin/transaction/${transaction.orderId}`,
+                pathname: `/myorders/${transaction.orderId}`,
                 state: { transaction: transaction },
               }}
             >
@@ -36,4 +36,4 @@ function AdminOrders(props) {
     </>
   );
 }
-export default AdminOrders;
+export default Orders;
