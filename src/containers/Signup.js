@@ -1,23 +1,25 @@
 import React, { useState } from "react";
 import { Auth } from "aws-amplify";
-import {
-  HelpBlock,
-  FormGroup,
-  FormControl,
-  ControlLabel
-} from "react-bootstrap";
+import { useHistory } from "react-router-dom";
+import { useAppContext } from "../libs/contextLib";
+import { FormControl, Input, InputLabel } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
 import LoaderButton from "../components/LoaderButton";
-import { useForFileds } from "../libs/hooksLib";
+import { useFormFields } from "../libs/hooksLib";
+import { onError } from "../libs/errorLib";
 
 export default function Signup(props) {
   const [fields, handleFieldChange] = useFormFields({
     email: "",
     password: "",
     confirmPassword: "",
-    ConfirmationCode: ""
+    ConfirmationCode: "",
   });
+
+  const history = useHistory();
   const [newUser, setNewUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { userHasAuthenticated } = useAppContext();
 
   function validateForm() {
     return (
@@ -27,21 +29,22 @@ export default function Signup(props) {
     );
   }
   function validateConfirmationForm() {
-    return fields.confirmationCode.length > O;
+    return fields.confirmationCode.length > 0;
   }
   async function handleSubmit(event) {
+    console.log("clicked");
     event.preventDefault();
     setIsLoading(true);
 
     try {
       const newUser = await Auth.signUp({
         username: fields.email,
-        password: fields.password
+        password: fields.password,
       });
       setIsLoading(false);
       setNewUser(newUser);
     } catch (e) {
-      alert(e.message);
+      onError(e);
       setIsLoading(false);
     }
   }
@@ -53,26 +56,28 @@ export default function Signup(props) {
       await Auth.confirmSignUp(fields.email, fields.confirmationCode);
       await Auth.signIn(fields.email, fields.password);
 
-      props.userHasAuthenticate(true);
-      props.history.push("/");
+      userHasAuthenticated(true);
+      history.push("/");
     } catch (e) {
-      alert(e.message);
+      onError(e);
       setIsLoading(false);
     }
   }
-  function renderConfirmationFrom() {
+  function renderConfirmationForm() {
     return (
       <form onSubmit={handleConfirmationSubmit}>
-        <FormGroup controlId="confirmationCode" bsSize="large">
-          <ControlLabel>Confirmation Code</ControlLabel>
-          <FormControl
+        <FormControl controlId="confirmationCode">
+          <InputLabel>Confirmation Code</InputLabel>
+          <Input
             autoFocus
             type="tel"
             onChange={handleFieldChange}
             value={fields.confirmationcode}
           />
-          <HelpBlock>Please check your email for the code.</HelpBlock>
-        </FormGroup>
+          <Alert severity="warning">
+            Please check your email for the code.
+          </Alert>
+        </FormControl>
         <LoaderButton
           block
           type="submit"
@@ -88,27 +93,34 @@ export default function Signup(props) {
   function renderForm() {
     return (
       <form onSubmit={handleSubmit}>
-        <FormGroup controlId="email" bsSize="large">
-          <ControlLabel>Email</ControlLabel>
-          <FormControl
+        <FormControl controlId="email">
+          <InputLabel>Email</InputLabel>
+          <Input
+            name="email"
             autoFocus
             type="email"
             value={fields.email}
             onChange={handleFieldChange}
           />
-        </FormGroup>
-        <FormGroup controlId="password" bsSize="large">
-          <ControlLabel>Password</ControlLabel>
-          <FormControl
+        </FormControl>
+        <FormControl controlId="password" bsSize="large">
+          <InputLabel>Password</InputLabel>
+          <Input
+            name="password"
             type="password"
             value={fields.password}
             onChange={handleFieldChange}
           />
-        </FormGroup>
-        <FormGroup controlId="confirmPassword" bsSize="large">
-          <ControlLabel>Confirm Password</ControlLabel>
-          <FormControl type="password" value={fields.confirmPassword} />
-        </FormGroup>
+        </FormControl>
+        <FormControl controlId="confirmPassword" bsSize="large">
+          <InputLabel>Confirm Password</InputLabel>
+          <Input
+            name="confirmPassword"
+            type="password"
+            value={fields.confirmPassword}
+            onChange={handleFieldChange}
+          />
+        </FormControl>
         <LoaderButton
           block
           type="submit"
@@ -121,4 +133,9 @@ export default function Signup(props) {
       </form>
     );
   }
+  return (
+    <div className="Signup">
+      {newUser === null ? renderForm() : renderConfirmationForm()}
+    </div>
+  );
 }

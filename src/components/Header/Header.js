@@ -28,18 +28,22 @@ const styles = (theme) => ({
 });
 // interiew with coldwar
 const Header = (props) => {
+  console.log("header props: ", props);
   const history = useHistory();
   const { classes, handleToggleDrawer } = props;
   const [isAuthenticating, setIsAuthenticating] = useState(true);
-  const { isAuthenticated, setIsAuthenticated } = useIsAuthenticated();
+  const { isAuthenticated, userHasAuthenticated } = useState(false);
   useEffect(() => {
+    console.log("here");
     onLoad();
   }, []);
 
   async function onLoad() {
     try {
-      await Auth.currentSession();
-      setIsAuthenticated(true);
+      const resp = await Auth.currentSession();
+      console.log("resp: ", resp);
+
+      userHasAuthenticated(true);
     } catch (e) {
       if (e !== "NO current user") {
         console.error(e);
@@ -49,7 +53,7 @@ const Header = (props) => {
   }
   async function handleLogout() {
     await Auth.signOut();
-    setIsAuthenticated(false);
+    userHasAuthenticated(false);
     // return <Redirect to="/login" />;
     history.push("/login");
   }

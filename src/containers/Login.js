@@ -5,10 +5,14 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import { Auth } from "aws-amplify";
 import "./Login.css";
+import { useAppContext } from "../libs/contextLib";
 import useIsAuthenticated from "../containers/AuthHook";
+import { onError } from "../libs/errorLib";
 
 export default function Login(props) {
   const [email, setEmail] = useState("");
+  const { userHasAuthenticated } = useAppContext();
+  const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState("");
   const { isAutheticated, setIsAuthenticated } = useIsAuthenticated();
 
@@ -18,12 +22,15 @@ export default function Login(props) {
 
   async function handleSubmit(event) {
     event.preventDefault();
+    setIsLoading(true);
+
     try {
       await Auth.signIn(email, password);
       alert("logged in");
-      setIsAuthenticated(true);
+      userHasAuthenticated(true);
     } catch (e) {
-      alert(e.message);
+      onError(e);
+      setIsLoading(false);
     }
   }
 

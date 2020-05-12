@@ -2,7 +2,6 @@ import React from "react";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import MenuItemComp from "./MenuItem";
 import Search from "./Search";
-import AdminOrders from "./AdminOrders";
 import {
   TableContainer,
   TableHead,
@@ -219,7 +218,6 @@ class Home extends React.Component {
 
                       0
                     );
-
 
                     return transaction.customerName === "victor sauceda" ? (
                       <Orders
