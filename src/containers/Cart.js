@@ -1,5 +1,6 @@
 import React from "react";
 import CartItem from "./CartItem";
+import StripeContainer from "./StripeContainer";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -10,7 +11,6 @@ import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Modal from "@material-ui/core/Modal";
-import StripeContainer from "./StripeContainer";
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -91,6 +91,7 @@ export default function Cart(props) {
       <Button onClick={handleOpen} variant="contained" fullWidth>
         Check Out
       </Button>
+
       <Modal
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"

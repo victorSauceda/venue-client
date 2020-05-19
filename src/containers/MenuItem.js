@@ -8,17 +8,29 @@ import {
   Input,
   Modal,
   Typography,
+  SwipeableDrawer,
+  Table,
+  TableRow,
+  TableContainer,
+  Paper,
+  TableBody,
+  TableCell,
+  TableHead,
   CardContent,
   Button,
 } from "@material-ui/core";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import RemoveIcon from "@material-ui/icons/Remove";
 import "./MenuItem.css";
+import CartItem from "./CartItem";
+import StripeContainer from "./StripeContainer";
 
 function MenuItemComp(props) {
   const [quantity, setQuantity] = useState(1);
+  const [open, setOpen] = useState(false);
   // const [description, setDescription] = useState("");
   const [isClicked, setIsClicked] = useState(false);
+  const [cartClick, setCartClick] = useState(false);
   const [fields, handleFieldChange] = useFormFields({
     orderDescription: "",
   });
@@ -35,9 +47,11 @@ function MenuItemComp(props) {
     event.preventDefault();
     props.addToCart(item, quantity, fields.orderDescription);
     setIsClicked(false);
+    setCartClick(true);
   };
 
   const { item, classes } = props;
+  console.log("cart", props.appProps.appProps.cartItems.length);
   return (
     <>
       <Card style={{ marginBottom: "20px", width: "30rem" }}>
@@ -182,6 +196,84 @@ function MenuItemComp(props) {
           </form>
         </div>
       </Modal>
+      <SwipeableDrawer
+        open={cartClick}
+        onClose={() => setCartClick(false)}
+        onOpen={() => setCartClick(true)}
+      >
+        <div style={{ maxWidth: "fit-content", margin: "0 auto" }}>
+          <h2>My Cart</h2>
+          {props.appProps.appProps.cartItems.length > 0 ? (
+            <div>
+              <TableContainer component={Paper}>
+                <Table aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Venue Item</TableCell>
+                      <TableCell align="right">Quantity</TableCell>
+                      <TableCell align="right">Diet Type</TableCell>
+                      <TableCell align="right">Price</TableCell>
+                      <TableCell align="right"></TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {props.appProps.appProps.cartItems.map((item, key) => {
+                      return (
+                        <CartItem
+                          key={key}
+                          addToCart={props.appProps.addToCart}
+                          item={item}
+                          updateCartItem={props.appProps.updateCartItem}
+                          deleteCartItem={props.appProps.deleteCartItem}
+                          adder={props.appProps.adder}
+                        />
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <h3 className="text-center">
+                {" "}
+                Cart Total: ${props.appProps.adder}
+              </h3>
+            </div>
+          ) : (
+            <p>Cart is Currently Empty</p>
+          )}
+          <Button onClick={() => setOpen(true)} variant="contained" fullWidth>
+            Check Out
+          </Button>
+
+          <Modal
+            aria-labelledby="simple-modal-title"
+            aria-describedby="simple-modal-description"
+            open={open}
+            onClose={() => setOpen(false)}
+            onClose={() => setOpen(true)}
+            adder={props.appProps.adder}
+          >
+            <div
+              style={{
+                backgroundColor: "white",
+                margin: "0 auto",
+                width: "80%",
+                height: "auto",
+                position: "relative",
+                top: "50%",
+                transform: "translateY(-50%)",
+                padding: "3rem",
+                borderColor: "white !important",
+              }}
+              className={classes.paper}
+            >
+              <StripeContainer
+                appProps={props}
+                onClose={() => setOpen(false)}
+              />
+            </div>
+          </Modal>
+        </div>
+      </SwipeableDrawer>
     </>
   );
 }
