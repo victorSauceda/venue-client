@@ -13,13 +13,13 @@ export default function Signup(props) {
     email: "",
     password: "",
     confirmPassword: "",
-    ConfirmationCode: "",
+    confirmationcode: "",
   });
 
   const history = useHistory();
   const [newUser, setNewUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const { userHasAuthenticated } = useAppContext();
+  const { isAuthenticated, userHasAuthenticated } = useAppContext();
 
   function validateForm() {
     return (
@@ -29,10 +29,9 @@ export default function Signup(props) {
     );
   }
   function validateConfirmationForm() {
-    return fields.confirmationCode.length > 0;
+    return fields.confirmationcode.length > 0;
   }
   async function handleSubmit(event) {
-    console.log("clicked");
     event.preventDefault();
     setIsLoading(true);
 
@@ -53,7 +52,7 @@ export default function Signup(props) {
 
     setIsLoading(true);
     try {
-      await Auth.confirmSignUp(fields.email, fields.confirmationCode);
+      await Auth.confirmSignUp(fields.email, fields.confirmationcode);
       await Auth.signIn(fields.email, fields.password);
 
       userHasAuthenticated(true);
@@ -66,10 +65,11 @@ export default function Signup(props) {
   function renderConfirmationForm() {
     return (
       <form onSubmit={handleConfirmationSubmit}>
-        <FormControl controlId="confirmationCode">
+        <FormControl controlId="confirmationcode">
           <InputLabel>Confirmation Code</InputLabel>
           <Input
             autoFocus
+            name="confirmationcode"
             type="tel"
             onChange={handleFieldChange}
             value={fields.confirmationcode}
@@ -83,7 +83,7 @@ export default function Signup(props) {
           type="submit"
           bsSize="large"
           isLoading={isLoading}
-          disabled={!validateConfirmationForm()}
+          // disabled={!validateConfirmationForm()}
         >
           Verify
         </LoaderButton>
@@ -125,8 +125,9 @@ export default function Signup(props) {
           block
           type="submit"
           bsSize="large"
+          onClick={handleSubmit}
           isLoading={isLoading}
-          disabled={!validateForm()}
+          // disabled={!validateForm()}
         >
           SignUp
         </LoaderButton>

@@ -6,7 +6,7 @@ import Input from "@material-ui/core/Input";
 import { Auth } from "aws-amplify";
 import "./Login.css";
 import { useAppContext } from "../libs/contextLib";
-import useIsAuthenticated from "../containers/AuthHook";
+
 import { onError } from "../libs/errorLib";
 
 export default function Login(props) {
@@ -14,7 +14,6 @@ export default function Login(props) {
   const { userHasAuthenticated } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState("");
-  const { isAutheticated, setIsAuthenticated } = useIsAuthenticated();
 
   function validateForm() {
     return email.length > 0 && password.length > 0;

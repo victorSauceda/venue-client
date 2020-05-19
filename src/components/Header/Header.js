@@ -28,25 +28,25 @@ const styles = (theme) => ({
 });
 // interiew with coldwar
 const Header = (props) => {
-  console.log("header props: ", props);
+  
   const history = useHistory();
   const { classes, handleToggleDrawer } = props;
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const { isAuthenticated, userHasAuthenticated } = useState(false);
   useEffect(() => {
-    console.log("here");
+    
     onLoad();
   }, []);
 
   async function onLoad() {
     try {
       const resp = await Auth.currentSession();
-      console.log("resp: ", resp);
+      
 
       userHasAuthenticated(true);
     } catch (e) {
       if (e !== "NO current user") {
-        console.error(e);
+        
       }
     }
     setIsAuthenticating(false);

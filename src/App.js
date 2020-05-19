@@ -55,12 +55,11 @@ const RouteObject = ({ childProps }) => {
           component={Theme}
           appProps={childProps}
         />
-        <UnauthenticatedRoute
-          exact
-          path="/"
-          component={Home}
-          appProps={childProps}
-        />
+        <Route exact path="/">
+          <MainLayout appProps={childProps}>
+            <Home appProps={childProps} />
+          </MainLayout>
+        </Route>
         <AuthenticatedRoute
           path={`/myorders/:id`}
           appProps={childProps}
@@ -169,7 +168,7 @@ const UnauthenticatedRoute = ({
   ...rest
 }) => {
   const { isAuthenticated } = useAppContext();
-  console.log("isAuthenticated: ", isAuthenticated);
+
   const redirect = querystring("redirect");
 
   return (
@@ -202,6 +201,8 @@ function App(props) {
   const [cartItems, setCartItems] = useState([]);
   const [transactions, setTransactions] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
+  const [isAuthenticated, userHasAuthenticated] = useState(false);
+  // const history = useHistory()
 
   useEffect(() => {
     onLoad();
@@ -213,9 +214,7 @@ function App(props) {
       setTransactions(response);
       const responseMenu = await API.get("vic", "/admin/menuitems");
       setMenuItems(responseMenu);
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   }
 
   const addToCart = (foodobj, qty, description) => {
@@ -278,7 +277,7 @@ function App(props) {
   };
 
   return (
-    <AppContext.Provider value={{ isAuthenticated: false }}>
+    <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
       <MuiThemeProvider theme={settings.theme}>
         <CssBaseline />
         {/* <div style={{ height: "100vh" }}> */}
