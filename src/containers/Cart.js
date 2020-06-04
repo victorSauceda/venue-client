@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Cart(props) {
+  console.log("my cart:", props);
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
   // const modalStyle = React.useMemo(getModalStyle, []);
@@ -68,15 +69,15 @@ export default function Cart(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {props.appProps.cartItems.map((item, key) => {
+                {props.appProps.appProps.cartItems.map((item, key) => {
                   return (
                     <CartItem
                       key={key}
-                      addToCart={props.appProps.addToCart}
+                      addToCart={props.addToCart}
                       item={item}
-                      updateCartItem={props.appProps.updateCartItem}
-                      deleteCartItem={props.appProps.deleteCartItem}
-                      adder={props.appProps.adder}
+                      updateCartItem={props.updateCartItem}
+                      deleteCartItem={props.deleteCartItem}
+                      adder={props.adder}
                     />
                   );
                 })}
