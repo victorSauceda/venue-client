@@ -35,7 +35,9 @@ function MenuItemComp(props) {
     orderDescription: "",
   });
   const handleChangeAdd = async (event) => {
+    console.log("bef", quantity);
     setQuantity(quantity + 1);
+    console.log("af", quantity);
   };
 
   const handleChangeMinus = async (event) => {
@@ -51,6 +53,7 @@ function MenuItemComp(props) {
   };
 
   const { item, classes } = props;
+  console.log("propsThatNeed: ", props);
   console.log("cart", props.appProps.appProps.cartItems.length);
   return (
     <>
@@ -148,7 +151,7 @@ function MenuItemComp(props) {
         aria-describedby="simple-modal-description"
         open={isClicked}
         onClose={() => setIsClicked(false)}
-        adder={props.appProps.adder}
+        adder={props.appProps.appProps.adder}
       >
         <div
           style={{
@@ -197,12 +200,17 @@ function MenuItemComp(props) {
         </div>
       </Modal>
       <SwipeableDrawer
+        style={{}}
+        anchor="right"
         open={cartClick}
         onClose={() => setCartClick(false)}
         onOpen={() => setCartClick(true)}
+        role="presentation"
       >
-        <div style={{ maxWidth: "fit-content", margin: "0 auto" }}>
-          <h2>My Cart</h2>
+        <div
+          style={{ maxWidth: "fit-content", margin: "0 auto", padding: "2rem" }}
+        >
+          <h2 style={{ marginBottom: "2rem", textAlign: "center" }}>My Cart</h2>
           {props.appProps.appProps.cartItems.length > 0 ? (
             <div>
               <TableContainer component={Paper}>
@@ -217,24 +225,39 @@ function MenuItemComp(props) {
                     </TableRow>
                   </TableHead>
                   <TableBody>
+                    {console.log("show me these", props.appProps)}
                     {props.appProps.appProps.cartItems.map((item, key) => {
+                      {
+                        console.log("props inside", props.appProps.appProps);
+                      }
                       return (
                         <CartItem
                           key={key}
-                          addToCart={props.appProps.addToCart}
+                          addToCart={props.appProps.appProps.addToCart}
                           item={item}
-                          updateCartItem={props.appProps.updateCartItem}
-                          deleteCartItem={props.appProps.deleteCartItem}
-                          adder={props.appProps.adder}
+                          updateCartItem={
+                            props.appProps.appProps.updateCartItem
+                          }
+                          deleteCartItem={
+                            props.appProps.appProps.deleteCartItem
+                          }
+                          adder={props.appProps.appProps.adder}
                         />
                       );
                     })}
                   </TableBody>
                 </Table>
               </TableContainer>
-              <h3 className="text-center">
+              <h3
+                className="text-center"
+                style={{
+                  textAlign: "center",
+                  marginTop: "2rem",
+                  marginBottom: "2rem",
+                }}
+              >
                 {" "}
-                Cart Total: ${props.appProps.adder}
+                Cart Total: ${props.appProps.appProps.adder}
               </h3>
             </div>
           ) : (
