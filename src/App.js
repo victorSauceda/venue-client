@@ -13,6 +13,7 @@ import { connect } from "react-redux";
 import Home from "./containers/Home";
 import Theme from "./containers/Theme";
 import Cart from "./containers/Cart";
+import CartItem from "./containers/CartItem";
 import MainLayout from "./layouts/MainLayout";
 import EmptyLayout from "./layouts/EmptyLayout";
 import Login from "./containers/Login";
@@ -122,15 +123,16 @@ const RouteObject = ({ childProps }) => {
           component={StripeContainer}
           appProps={childProps}
         />
-        <AuthenticatedRoute
-          path="/cart"
-          appProps={childProps}
-          component={Cart}
-        />
+
         <AuthenticatedRoute
           path="/settings"
           appProps={childProps}
           component={Cart}
+        />
+        <AuthenticatedRoute
+          path="/cart"
+          appProps={childProps}
+          component={CartItem}
         />
 
         <EmptyRoute component={NotFound} />
@@ -237,7 +239,7 @@ function App(props) {
       (element) => foodobj.name === element.name
     );
     itemUpdating.qty = qty;
-    return setCartItems(itemUpdating);
+    return setCartItems(newCart2);
 
     // this.setState((prevState) => {
     //   const cartItems = [...prevState.cartItems];
@@ -245,7 +247,7 @@ function App(props) {
     //     (element) => foodobj.name === element.name
     //   );
     //   itemUpdating.qty = qty;
-    //   return { cartItems: cartItems };
+    //   return { cartItems: cartItems};
     // });
   };
   const deleteCartItem = (foodobj) => {
@@ -263,9 +265,11 @@ function App(props) {
   };
 
   const { settings } = props;
+  console.log("cartITemsInApp", cartItems);
   let adder = cartItems.reduce((acc, next) => {
     return acc + next.price * next.qty;
   }, 0);
+  console.log("adder: ", adder);
   const childProps = {
     cartItems: cartItems,
     addToCart: addToCart,

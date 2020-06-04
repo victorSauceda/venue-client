@@ -6,7 +6,12 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import RemoveIcon from "@material-ui/icons/Remove";
 
 class CartItem extends React.Component {
+  constructor(props) {
+    console.log("cartItmeprops: ", props);
+    super(props);
+  }
   handleChangeAdd = (item, qty) => {
+    console.log("handlechangeCheck", this.props);
     this.props.updateCartItem(item, qty);
   };
 
@@ -14,8 +19,10 @@ class CartItem extends React.Component {
     // Add in separate picee of logic, so if that if it goes to 0 - run remove item function
     this.props.updateCartItem(item, qty);
   };
+
   render() {
     const { item } = this.props;
+    // console.log("this.props: ", props);
 
     let lessThan = this.props.item.qty - 1;
     let moreThan = this.props.item.qty + 1;
@@ -33,7 +40,11 @@ class CartItem extends React.Component {
             height="42"
             width="442"
           />
-          <p style={{ textAlign: "justify", width: "12rem" }}>{item.name}</p>
+          <p
+            style={{ textAlign: "justify", width: "12rem", marginTop: "1rem" }}
+          >
+            {item.name}
+          </p>
         </TableCell>
         <TableCell align="right">
           <div
@@ -50,9 +61,9 @@ class CartItem extends React.Component {
             />
             <p
               style={{
-                marginLeft: "-23px",
-                marginRight: "-22px",
-                marginTop: "4px",
+                marginLeft: "2rem",
+                marginRight: "2rem",
+                marginTop: ".4rem",
               }}
             >
               {item.qty}
